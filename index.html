@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grafikdesign Referenz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --border: #e4e2dc;
+    --border-hover: #c8c5bc;
+    --text: #1a1917;
+    --text-muted: #6b6860;
+    --text-faint: #a09d96;
+    --accent: #2563eb;
+    --accent-bg: #eff6ff;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Layout ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .logo span { color: var(--text-muted); font-weight: 400; }
+
+  .main-wrap { display: flex; min-height: calc(100vh - 56px); }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 1.25rem 0;
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+  .sidebar-section { margin-bottom: 1.5rem; }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    padding: 0 1rem;
+    margin-bottom: 4px;
+  }
+  .sidebar-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: left;
+    border-radius: 0;
+    transition: all 0.12s;
+  }
+  .sidebar-btn:hover { background: var(--bg); color: var(--text); }
+  .sidebar-btn.active { background: var(--accent-bg); color: var(--accent); font-weight: 500; }
+  .sidebar-btn .num {
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 18px;
+    text-align: center;
+    opacity: 0.6;
+  }
+  .sidebar-done { margin-left: auto; }
+  .sidebar-done i { font-size: 13px; color: #22c55e; }
+
+  /* ── Progress ── */
+  .progress-wrap { padding: 0 1rem 1rem; }
+  .progress-text { font-size: 11px; color: var(--text-faint); margin-bottom: 5px; }
+  .progress-bar { height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.4s ease; }
+
+  /* ── Content ── */
+  .content { flex: 1; padding: 2rem; max-width: 900px; }
+
+  /* ── Search ── */
+  .search-wrap { position: relative; margin-bottom: 1.5rem; }
+  .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text-faint); pointer-events: none; }
+  .search-input {
+    width: 100%;
+    padding: 10px 12px 10px 38px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-faint); }
+
+  /* ── Chapter header ── */
+  .chapter-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .chapter-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+  .chapter-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .done-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text-muted);
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .done-btn:hover { border-color: var(--border-hover); color: var(--text); }
+  .done-btn.done { border-color: #bbf7d0; background: #f0fdf4; color: #15803d; }
+
+  /* ── Cards ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    box-shadow: var(--shadow);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { border-color: var(--border-hover); }
+  .card-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 99px;
+    margin-bottom: 8px;
+  }
+  .card-icon { font-size: 20px; margin-bottom: 6px; color: var(--text-muted); }
+  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+  .card-img { width: 100%; border-radius: var(--radius-sm); margin-top: 10px; display: block; }
+  .card-actions { display: flex; gap: 6px; margin-top: 10px; }
+  .card-del {
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: none;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-faint);
+    transition: all 0.12s;
+  }
+  .card-del:hover { border-color: #fca5a5; color: #ef4444; background: #fef2f2; }
+
+  /* ── Add card ── */
+  .add-card-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    background: none;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.15s;
+    margin-bottom: 2rem;
+  }
+  .add-card-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+
+  /* ── Modal ── */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-title { font-size: 16px; font-weight: 600; margin-bottom: 1.25rem; }
+  .form-group { margin-bottom: 1rem; }
+  .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
+  .form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent); }
+  .form-textarea { resize: vertical; min-height: 80px; }
+  .form-hint { font-size: 11px; color: var(--text-faint); margin-top: 4px; }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
+  .btn-secondary {
+    padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    background: none; font-size: 13px; cursor: pointer; color: var(--text-muted);
+  }
+  .btn-secondary:hover { background: var(--bg); }
+  .btn-primary {
+    padding: 8px 16px; border: none; border-radius: var(--radius-sm);
+    background: var(--accent); color: #fff; font-size: 13px; font-weight: 500; cursor: pointer;
+  }
+  .btn-primary:hover { background: #1d4ed8; }
+
+  /* ── Adobe area ── */
+  .adobe-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+  .adobe-tab {
+    flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); font-size: 13px; font-weight: 500; cursor: pointer;
+    color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 7px;
+    transition: all 0.15s; box-shadow: var(--shadow);
+  }
+  .adobe-tab:hover { border-color: var(--border-hover); color: var(--text); }
+  .adobe-tab.active { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+  .adobe-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .dot-ps { background: #31A8FF; }
+  .dot-ai { background: #FF9A00; }
+  .dot-id { background: #FF3366; }
+
+  /* ── Search results ── */
+  .section-label { font-size: 12px; font-weight: 600; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
+  .highlight { background: #fef08a; border-radius: 2px; padding: 0 1px; }
+
+  /* ── Empty state ── */
+  .empty { text-align: center; padding: 3rem 1rem; color: var(--text-faint); font-size: 14px; }
+  .empty i { font-size: 32px; display: block; margin-bottom: 8px; }
+
+  /* ── Color tags per chapter ── */
+  .tag-01 { background:#EEEDFE; color:#3C3489; }
+  .tag-02 { background:#E1F5EE; color:#0F6E56; }
+  .tag-03 { background:#FAECE7; color:#993C1D; }
+  .tag-04 { background:#E6F1FB; color:#185FA5; }
+  .tag-05 { background:#FAEEDA; color:#854F0B; }
+  .tag-06 { background:#E1F5EE; color:#085041; }
+  .tag-07 { background:#FAECE7; color:#712B13; }
+  .tag-08 { background:#EEEDFE; color:#26215C; }
+  .tag-09 { background:#FBEAF0; color:#993556; }
+  .tag-10 { background:#E6F1FB; color:#0C447C; }
+  .tag-11 { background:#F1EFE8; color:#5F5E5A; }
+  .tag-12 { background:#FAEEDA; color:#633806; }
+  .tag-ps  { background:#e0f4ff; color:#0369a1; }
+  .tag-ai  { background:#fff7ed; color:#c2410c; }
+  .tag-id  { background:#fdf2f8; color:#9d174d; }
+
+  @media (max-width: 700px) {
+    .sidebar { display: none; }
+    .content { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Grafikdesign <span>Referenz</span></div>
+  <div style="font-size:12px;color:var(--text-faint);">liselipiseli</div>
+</header>
+
+<div class="main-wrap">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Bereich</div>
+      <button class="sidebar-btn active" onclick="switchArea('kurs', this)" id="areaKurs">
+        <i class="ti ti-book-2"></i> Kurskapitel
+      </button>
+      <button class="sidebar-btn" onclick="switchArea('adobe', this)" id="areaAdobe">
+        <i class="ti ti-apps"></i> Adobe Tools
+      </button>
+    </div>
+
+    <div class="sidebar-section" id="chapterNav">
+      <div class="sidebar-label">Kapitel</div>
+      <!-- filled by JS -->
+    </div>
+
+    <div class="sidebar-section" id="progressSection">
+      <div class="progress-wrap">
+        <div class="progress-text" id="progressText">0 / 12 erledigt</div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="content">
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <i class="ti ti-search"></i>
+      <input class="search-input" type="text" id="searchInput" placeholder="Begriff suchen – Kerning, CMYK, Ebenen …" oninput="doSearch(this.value)">
+    </div>
+
+    <!-- Search results -->
+    <div id="searchView" style="display:none;">
+      <div class="section-label" id="searchLabel">Suchergebnisse</div>
+      <div class="cards-grid" id="searchCards"></div>
+    </div>
+
+    <!-- Kurs area -->
+    <div id="kursView">
+      <div class="chapter-header">
+        <div>
+          <div class="chapter-title" id="chapterTitle"></div>
+          <div class="chapter-sub" id="chapterSub"></div>
+        </div>
+        <button class="done-btn" id="doneBtn" onclick="toggleDone()">
+          <i class="ti ti-circle"></i> Als erledigt markieren
+        </button>
+      </div>
+      <div class="cards-grid" id="kursCards"></div>
+      <button class="add-card-btn" onclick="openModal('kurs')">
+        <i class="ti ti-plus"></i> Neue Karte hinzufügen
+      </button>
+    </div>
+
+    <!-- Adobe area -->
+    <div id="adobeView" style="display:none;">
+      <div class="adobe-tabs">
+        <button class="adobe-tab active" onclick="switchAdobe('ps', this)"><span class="adobe-dot dot-ps"></span>Photoshop</button>
+        <button class="adobe-tab" onclick="switchAdobe('ai', this)"><span class="adobe-dot dot-ai"></span>Illustrator</button>
+        <button class="adobe-tab" onclick="switchAdobe('id', this)"><span class="adobe-dot dot-id"></span>InDesign</button>
+      </div>
+      <div class="cards-grid" id="adobeCards"></div>
+      <button class="add-card-btn" onclick="openModal('adobe')">
+        <i class="ti ti-plus"></i> Neue Karte hinzufügen
+      </button>
+    </div>
+
+  </main>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Neue Karte</div>
+
+    <div class="form-group">
+      <label class="form-label">Titel *</label>
+      <input class="form-input" type="text" id="fTitle" placeholder="z. B. Kerning & Tracking">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Beschreibung *</label>
+      <textarea class="form-textarea" id="fDesc" placeholder="Kurze Erklärung des Begriffs oder Konzepts …"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Icon (Tabler-Name)</label>
+      <input class="form-input" type="text" id="fIcon" placeholder="ti-letter-t" value="ti-file">
+      <div class="form-hint">Optional. Vollständige Liste: <a href="https://tabler.io/icons" target="_blank">tabler.io/icons</a></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Bild-URL</label>
+      <input class="form-input" type="text" id="fImg" placeholder="https://… (optional)">
+      <div class="form-hint">Link zu einem Bild (z. B. von deinem GitHub repo oder Imgur).</div>
+    </div>
+    <div class="form-group" id="chapterPickGroup">
+      <label class="form-label">Kapitel</label>
+      <select class="form-select" id="fChapter"></select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Abbrechen</button>
+      <button class="btn-primary" onclick="saveCard()">Karte speichern</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+const CHAPTERS = [
+  { id:'c01', num:'01', title:'Grundlagen der Gestaltung' },
+  { id:'c02', num:'02', title:'Farbe und Farbsysteme' },
+  { id:'c03', num:'03', title:'Bild, Bildbearbeitung & KI' },
+  { id:'c04', num:'04', title:'Typografie und Schrift' },
+  { id:'c05', num:'05', title:'Zeichen, Piktogramme & Icons' },
+  { id:'c06', num:'06', title:'Layout und Editorialdesign' },
+  { id:'c07', num:'07', title:'Logodesign' },
+  { id:'c08', num:'08', title:'Corporate Design' },
+  { id:'c09', num:'09', title:'Marketing und Werbung' },
+  { id:'c10', num:'10', title:'Screen und Interfacedesign' },
+  { id:'c11', num:'11', title:'Designmanagement' },
+  { id:'c12', num:'12', title:'Designgeschichte & Abschlussprojekt' },
+];
+
+const ADOBE_PROGRAMS = { ps:'Photoshop', ai:'Illustrator', id:'InDesign' };
+
+const DEFAULT_CARDS = {
+  c01:[
+    { id:'d01a', icon:'ti-layout-grid', title:'Gestaltungsprinzipien', desc:'Kontrast, Wiederholung, Ausrichtung, Nähe – die vier Grundprinzipien nach Robin Williams.' },
+    { id:'d01b', icon:'ti-eye', title:'Wahrnehmungspsychologie', desc:'Gestaltgesetze: Nähe, Ähnlichkeit, Kontinuität, Geschlossenheit.' },
+  ],
+  c02:[
+    { id:'d02a', icon:'ti-palette', title:'RGB vs. CMYK', desc:'RGB für Bildschirm (additiv), CMYK für Druck (subtraktiv).' },
+    { id:'d02b', icon:'ti-color-swatch', title:'Farbharmonien', desc:'Komplementär, analog, triadisch – Farbkombinationen gezielt einsetzen.' },
+  ],
+  c03:[
+    { id:'d03a', icon:'ti-photo', title:'Bildkomposition', desc:'Drittelregel, Fluchtpunkt, Rahmung – bewusst fotografieren.' },
+    { id:'d03b', icon:'ti-adjustments', title:'Exportformate', desc:'JPEG, PNG, TIFF, WebP, SVG – wann welches Format.' },
+    { id:'d03c', icon:'ti-robot', title:'KI in der Bildbearbeitung', desc:'Generative Fill, KI-Freistellen, Upscaling.' },
+  ],
+  c04:[
+    { id:'d04a', icon:'ti-letter-t', title:'Schriftklassen', desc:'Serif, Sans-Serif, Monospace, Display – Wirkung und Einsatzbereiche.' },
+    { id:'d04b', icon:'ti-line-height', title:'Mikrotypografie', desc:'Kerning, Tracking, Leading – feine Stellschrauben für professionellen Textsatz.' },
+  ],
+  c05:[
+    { id:'d05a', icon:'ti-icons', title:'Icon-Systeme', desc:'Konsistente Sets: gleiche Strichstärke, gleicher Stil, gleiches Raster.' },
+    { id:'d05b', icon:'ti-vector', title:'Piktogrammgestaltung', desc:'Reduktion auf das Wesentliche – komplexe Inhalte in einfache Formen.' },
+  ],
+  c06:[
+    { id:'d06a', icon:'ti-layout-columns', title:'Rastersysteme', desc:'Spalten-, Modul- und Grundlinienraster für mehrseitige Layouts.' },
+    { id:'d06b', icon:'ti-file-text', title:'Editorial Design', desc:'Satzspiegelkonstruktion, Leseführung in Magazinen und Büchern.' },
+  ],
+  c07:[
+    { id:'d07a', icon:'ti-circle', title:'Logoformen', desc:'Wortmarke, Bildmarke, Kombinationsmarke, Emblem.' },
+    { id:'d07b', icon:'ti-rulers', title:'Schutzzone & Skalierung', desc:'Mindestgröße, Schutzzone, Schwarz-Weiß-Version definieren.' },
+  ],
+  c08:[
+    { id:'d08a', icon:'ti-file-description', title:'Brand Guidelines', desc:'Farbe, Schrift, Bildsprache, Ton – konsistentes Markenbild.' },
+    { id:'d08b', icon:'ti-building', title:'Corporate Identity', desc:'CD vs. CI: was ist sichtbar, was ist Haltung?' },
+  ],
+  c09:[
+    { id:'d09a', icon:'ti-speakerphone', title:'Werbemittel', desc:'Print vs. Digital – Formate, Auflösungen, Besonderheiten.' },
+    { id:'d09b', icon:'ti-target', title:'Zielgruppenanalyse', desc:'Gestaltung auf Alter, Kontext, Kultur abstimmen.' },
+  ],
+  c10:[
+    { id:'d10a', icon:'ti-device-mobile', title:'UI-Grundlagen', desc:'Grid-Systeme, Abstände, Touch-Targets für digitale Oberflächen.' },
+    { id:'d10b', icon:'ti-accessible', title:'Barrierefreiheit', desc:'WCAG-Kontrastverhältnisse, Schriftgrößen, Screenreader.' },
+  ],
+  c11:[
+    { id:'d11a', icon:'ti-briefcase', title:'Projektablauf', desc:'Briefing → Konzept → Entwurf → Feedback → Reinzeichnung.' },
+    { id:'d11b', icon:'ti-users', title:'Kundenumgang', desc:'Feedback annehmen, Entscheidungen dokumentieren, Präsentationen.' },
+  ],
+  c12:[
+    { id:'d12a', icon:'ti-clock-history', title:'Designgeschichte', desc:'Bauhaus, Swiss Style, Postmoderne, Digital Age.' },
+    { id:'d12b', icon:'ti-trophy', title:'Abschlussprojekt', desc:'Eigene Designarbeit von der Idee bis zur Präsentation.' },
+  ],
+  ps:[
+    { id:'dps1', icon:'ti-layers-intersect', title:'Ebenen & Masken', desc:'Nicht-destruktives Arbeiten mit Ebenenmasken und Smart Objects.' },
+    { id:'dps2', icon:'ti-cut', title:'Freistellen', desc:'Schnellauswahl, Kanal-Maske, Stift-Werkzeug.' },
+    { id:'dps3', icon:'ti-adjustments-horizontal', title:'Korrekturen', desc:'Histogramm, Kurven, Farbton/Sättigung nicht-destruktiv.' },
+    { id:'dps4', icon:'ti-file-export', title:'Export für Web', desc:'Format, Größe und Qualität beim Webexport optimieren.' },
+  ],
+  ai:[
+    { id:'dai1', icon:'ti-vector', title:'Ankerpunkte & Pfade', desc:'Bézier-Kurven, glatte vs. eckige Punkte, Pfade verbinden.' },
+    { id:'dai2', icon:'ti-topology-star', title:'Pathfinder', desc:'Vereinen, Abziehen, Schnittmenge – Formen kombinieren.' },
+    { id:'dai3', icon:'ti-letter-t', title:'Schrift in Pfade', desc:'Text umwandeln für drucksichere Dateien.' },
+    { id:'dai4', icon:'ti-artboard', title:'Zeichenflächen', desc:'Mehrere Formate in einem Dokument verwalten.' },
+  ],
+  id:[
+    { id:'did1', icon:'ti-layout-grid', title:'Musterseiten', desc:'Wiederkehrende Elemente einmal definieren, überall nutzen.' },
+    { id:'did2', icon:'ti-text-wrap', title:'Textfluss', desc:'Verkettete Textrahmen für automatischen Fluss über Seiten.' },
+    { id:'did3', icon:'ti-color-filter', title:'Absatzformate', desc:'Formatvorlagen für konsistente Typografie im Dokument.' },
+    { id:'did4', icon:'ti-printer', title:'Druckausgabe', desc:'Preflight, Druckmarken, Anschnitt – PDF/X exportieren.' },
+  ],
+};
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let area = 'kurs';
+let currentChapter = 'c01';
+let currentAdobe = 'ps';
+let modalContext = 'kurs';
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem('gd-ref') || '{}');
+  } catch(e) { return {}; }
+}
+function saveState(state) {
+  localStorage.setItem('gd-ref', JSON.stringify(state));
+}
+
+function getCards(key) {
+  const state = loadState();
+  if (state.cards && state.cards[key]) return state.cards[key];
+  return DEFAULT_CARDS[key] || [];
+}
+function setCards(key, cards) {
+  const state = loadState();
+  if (!state.cards) state.cards = {};
+  state.cards[key] = cards;
+  saveState(state);
+}
+function getDone() { return new Set(loadState().done || []); }
+function setDone(set) { const s = loadState(); s.done = [...set]; saveState(s); }
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+function buildSidebar() {
+  const nav = document.getElementById('chapterNav');
+  const done = getDone();
+  nav.innerHTML = '<div class="sidebar-label">Kapitel</div>' +
+    CHAPTERS.map(c => `
+      <button class="sidebar-btn ${c.id === currentChapter && area==='kurs' ? 'active' : ''}"
+        id="sb-${c.id}" onclick="showChapter('${c.id}')">
+        <span class="num">${c.num}</span>
+        <span style="flex:1;text-align:left;">${c.title}</span>
+        ${done.has(c.id) ? '<span class="sidebar-done"><i class="ti ti-check"></i></span>' : ''}
+      </button>`).join('');
+  updateProgress(done);
+}
+
+function updateProgress(done) {
+  if (!done) done = getDone();
+  const pct = Math.round((done.size / 12) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${done.size} / 12 erledigt`;
+}
+
+// ── Chapter view ──────────────────────────────────────────────────────────────
+function showChapter(id) {
+  currentChapter = id;
+  area = 'kurs';
+  document.getElementById('kursView').style.display = '';
+  document.getElementById('adobeView').style.display = 'none';
+  document.getElementById('chapterNav').style.display = '';
+  document.getElementById('progressSection').style.display = '';
+  document.getElementById('areaKurs').classList.add('active');
+  document.getElementById('areaAdobe').classList.remove('active');
+  clearSearch();
+  renderChapter();
+  buildSidebar();
+}
+
+function renderChapter() {
+  const c = CHAPTERS.find(x => x.id === currentChapter);
+  const done = getDone();
+  document.getElementById('chapterTitle').textContent = `${c.num}. ${c.title}`;
+  document.getElementById('chapterSub').textContent = getCards(c.id).length + ' Karten';
+  const doneBtn = document.getElementById('doneBtn');
+  if (done.has(c.id)) {
+    doneBtn.className = 'done-btn done';
+    doneBtn.innerHTML = '<i class="ti ti-check"></i> Erledigt';
+  } else {
+    doneBtn.className = 'done-btn';
+    doneBtn.innerHTML = '<i class="ti ti-circle"></i> Als erledigt markieren';
+  }
+  const cards = getCards(c.id);
+  const grid = document.getElementById('kursCards');
+  grid.innerHTML = cards.length ? cards.map(card => cardHTML(card, c.id)).join('') : emptyHTML();
+}
+
+function toggleDone() {
+  const done = getDone();
+  if (done.has(currentChapter)) done.delete(currentChapter);
+  else done.add(currentChapter);
+  setDone(done);
+  renderChapter();
+  buildSidebar();
+}
+
+// ── Adobe view ────────────────────────────────────────────────────────────────
+function switchArea(a, btn) {
+  area = a;
+  document.querySelectorAll('.sidebar-btn[id^="area"]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('kursView').style.display = a === 'kurs' ? '' : 'none';
+  document.getElementById('adobeView').style.display = a === 'adobe' ? '' : 'none';
+  document.getElementById('chapterNav').style.display = a === 'kurs' ? '' : 'none';
+  document.getElementById('progressSection').style.display = a === 'kurs' ? '' : 'none';
+  clearSearch();
+  if (a === 'adobe') renderAdobe();
+  else renderChapter();
+}
+
+function switchAdobe(prog, btn) {
+  currentAdobe = prog;
+  document.querySelectorAll('.adobe-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdobe();
+}
+
+function renderAdobe() {
+  const cards = getCards(currentAdobe);
+  const grid = document.getElementById('adobeCards');
+  grid.innerHTML = cards.length ? cards.map(card => cardHTML(card, currentAdobe)).join('') : emptyHTML();
+}
+
+// ── Card HTML ─────────────────────────────────────────────────────────────────
+function cardHTML(card, key) {
+  const isChapter = key.startsWith('c');
+  const tagClass = isChapter ? `tag-${key.slice(1)}` : `tag-${key}`;
+  const tagLabel = isChapter
+    ? (CHAPTERS.find(c => c.id === key)?.num || '')
+    : ADOBE_PROGRAMS[key] || key;
+  return `<div class="card" id="card-${card.id}">
+    <span class="card-tag ${tagClass}">${tagLabel}</span>
+    <div class="card-icon"><i class="ti ${card.icon || 'ti-file'}"></i></div>
+    <div class="card-title">${esc(card.title)}</div>
+    <div class="card-desc">${esc(card.desc)}</div>
+    ${card.img ? `<img class="card-img" src="${esc(card.img)}" alt="${esc(card.title)}" loading="lazy">` : ''}
+    <div class="card-actions">
+      <button class="card-del" onclick="deleteCard('${key}','${card.id}')"><i class="ti ti-trash"></i> Löschen</button>
+    </div>
+  </div>`;
+}
+
+function emptyHTML() {
+  return '<div class="empty"><i class="ti ti-cards"></i>Noch keine Karten – füge die erste hinzu!</div>';
+}
+
+function deleteCard(key, id) {
+  if (!confirm('Karte wirklich löschen?')) return;
+  const cards = getCards(key).filter(c => c.id !== id);
+  setCards(key, cards);
+  if (key.startsWith('c')) renderChapter();
+  else renderAdobe();
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openModal(context) {
+  modalContext = context;
+  document.getElementById('fTitle').value = '';
+  document.getElementById('fDesc').value = '';
+  document.getElementById('fIcon').value = 'ti-file';
+  document.getElementById('fImg').value = '';
+
+  const cpg = document.getElementById('chapterPickGroup');
+  if (context === 'kurs') {
+    cpg.style.display = '';
+    const sel = document.getElementById('fChapter');
+    sel.innerHTML = CHAPTERS.map(c => `<option value="${c.id}" ${c.id===currentChapter?'selected':''}>${c.num} – ${c.title}</option>`).join('');
+    document.getElementById('modalTitle').textContent = 'Neue Karte – Kurskapitel';
+  } else {
+    cpg.style.display = 'none';
+    document.getElementById('modalTitle').textContent = `Neue Karte – Adobe ${ADOBE_PROGRAMS[currentAdobe]}`;
+  }
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.getElementById('fTitle').focus();
+}
+
+function closeModal() {
+  document.getElementById('modalBackdrop').classList.remove('open');
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalBackdrop')) closeModal();
+}
+
+function saveCard() {
+  const title = document.getElementById('fTitle').value.trim();
+  const desc = document.getElementById('fDesc').value.trim();
+  if (!title || !desc) { alert('Bitte Titel und Beschreibung ausfüllen.'); return; }
+  const icon = document.getElementById('fIcon').value.trim() || 'ti-file';
+  const img = document.getElementById('fImg').value.trim();
+  const key = modalContext === 'kurs' ? document.getElementById('fChapter').value : currentAdobe;
+  const card = { id: 'u' + Date.now(), icon, title, desc, img };
+  const cards = [...getCards(key), card];
+  setCards(key, cards);
+  closeModal();
+  if (modalContext === 'kurs') { currentChapter = key; renderChapter(); buildSidebar(); }
+  else renderAdobe();
+}
+
+// ── Search ────────────────────────────────────────────────────────────────────
+function allSearchCards() {
+  const out = [];
+  CHAPTERS.forEach(c => getCards(c.id).forEach(card => out.push({ card, key: c.id })));
+  Object.keys(ADOBE_PROGRAMS).forEach(k => getCards(k).forEach(card => out.push({ card, key: k })));
+  return out;
+}
+
+function doSearch(q) {
+  const sv = document.getElementById('searchView');
+  if (!q.trim()) { sv.style.display = 'none'; return; }
+  sv.style.display = '';
+  const results = allSearchCards().filter(({ card }) =>
+    (card.title + card.desc).toLowerCase().includes(q.toLowerCase())
+  );
+  document.getElementById('searchLabel').textContent = `${results.length} Ergebnis${results.length !== 1 ? 'se' : ''} für „${q}"`;
+  const sc = document.getElementById('searchCards');
+  if (!results.length) {
+    sc.innerHTML = '<div class="empty"><i class="ti ti-search-off"></i>Nichts gefunden.</div>';
+  } else {
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+    const hi = t => t.replace(re, '<span class="highlight">$1</span>');
+    sc.innerHTML = results.map(({ card, key }) => {
+      const tagClass = key.startsWith('c') ? `tag-${key.slice(1)}` : `tag-${key}`;
+      const tagLabel = key.startsWith('c') ? (CHAPTERS.find(c => c.id === key)?.num || '') : ADOBE_PROGRAMS[key];
+      return `<div class="card">
+        <span class="card-tag ${tagClass}">${tagLabel}</span>
+        <div class="card-icon"><i class="ti ${card.icon || 'ti-file'}"></i></div>
+        <div class="card-title">${hi(esc(card.title))}</div>
+        <div class="card-desc">${hi(esc(card.desc))}</div>
+        ${card.img ? `<img class="card-img" src="${esc(card.img)}" alt="${esc(card.title)}" loading="lazy">` : ''}
+      </div>`;
+    }).join('');
+  }
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchView').style.display = 'none';
+}
+
+// ── Util ──────────────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+buildSidebar();
+renderChapter();
+</script>
+</body>
+</html>
