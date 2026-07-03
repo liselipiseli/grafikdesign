@@ -7,724 +7,424 @@ cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
 <title>Grafikdesign Referenz</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f7f4;--surface:#fff;--border:#e4e2dc;--border-h:#c8c5bc;
+  --text:#1a1917;--muted:#6b6860;--faint:#a09d96;
+  --accent:#2563eb;--accent-bg:#eff6ff;
+  --r:10px;--rs:6px;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh}
 
-  :root {
-    --bg: #f8f7f4;
-    --surface: #ffffff;
-    --border: #e4e2dc;
-    --border-hover: #c8c5bc;
-    --text: #1a1917;
-    --text-muted: #6b6860;
-    --text-faint: #a09d96;
-    --accent: #2563eb;
-    --accent-bg: #eff6ff;
-    --radius: 10px;
-    --radius-sm: 6px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
-  }
+/* header */
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-size:14px;font-weight:600;letter-spacing:-.01em}
+.logo span{color:var(--muted);font-weight:400}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.6;
-  }
+/* search */
+.search-wrap{max-width:680px;margin:1.5rem auto;padding:0 1.5rem;position:relative}
+.search-wrap i{position:absolute;left:calc(1.5rem + 12px);top:50%;transform:translateY(-50%);font-size:15px;color:var(--faint);pointer-events:none}
+.search-input{width:100%;padding:9px 12px 9px 36px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:14px;color:var(--text);outline:none;transition:border-color .15s;font-family:inherit}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--faint)}
 
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-  .logo span { color: var(--text-muted); font-weight: 400; }
+/* main layout */
+.page{max-width:680px;margin:0 auto;padding:0 1.5rem 4rem}
 
-  .main-wrap { display: flex; min-height: calc(100vh - 56px); }
+/* area switch */
+.area-switch{display:flex;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;background:var(--surface)}
+.area-switch button{flex:1;padding:9px 16px;border:none;background:none;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .12s}
+.area-switch button:hover{background:var(--bg)}
+.area-switch button.active{background:var(--accent-bg);color:var(--accent)}
+.area-switch button+button{border-left:1px solid var(--border)}
 
-  .sidebar {
-    width: 230px;
-    min-width: 230px;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    padding: 1.25rem 0;
-    position: sticky;
-    top: 56px;
-    height: calc(100vh - 56px);
-    overflow-y: auto;
-  }
-  .sidebar-section { margin-bottom: 1.5rem; }
-  .sidebar-label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--text-faint);
-    padding: 0 1rem;
-    margin-bottom: 4px;
-  }
-  .sidebar-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 7px 1rem;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 13px;
-    color: var(--text-muted);
-    text-align: left;
-    transition: all 0.12s;
-  }
-  .sidebar-btn:hover { background: var(--bg); color: var(--text); }
-  .sidebar-btn.active { background: var(--accent-bg); color: var(--accent); font-weight: 500; }
-  .sidebar-btn .num {
-    font-size: 10px;
-    font-weight: 600;
-    min-width: 20px;
-    opacity: 0.55;
-  }
+/* accordion chapter */
+.chapter{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow)}
+.chapter-head{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;user-select:none;transition:background .12s}
+.chapter-head:hover{background:var(--bg)}
+.chapter-num{font-size:11px;font-weight:700;color:var(--faint);min-width:22px}
+.chapter-name{flex:1;font-size:14px;font-weight:500;color:var(--text)}
+.chapter-count{font-size:11px;color:var(--faint)}
+.chapter-chevron{font-size:16px;color:var(--faint);transition:transform .2s}
+.chapter.open .chapter-chevron{transform:rotate(180deg)}
+.chapter-body{display:none;border-top:1px solid var(--border);padding:12px}
+.chapter.open .chapter-body{display:block}
 
-  .content { flex: 1; padding: 2rem; max-width: 960px; }
+/* cards */
+.cards{display:flex;flex-direction:column;gap:8px}
+.card{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px}
+.card-tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:99px;margin-bottom:7px}
+.card-title{font-size:13px;font-weight:600;margin-bottom:5px}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.65;white-space:pre-line}
+.card-imgs{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.card-imgs img{width:100%;border-radius:4px;border:1px solid var(--border);display:block}
+.card-foot{display:flex;justify-content:flex-end;margin-top:8px;padding-top:7px;border-top:1px solid var(--border)}
+.del-btn{padding:3px 8px;border:1px solid var(--border);border-radius:4px;background:none;font-size:11px;cursor:pointer;color:var(--faint);font-family:inherit;display:flex;align-items:center;gap:3px;transition:all .12s}
+.del-btn:hover{border-color:#fca5a5;color:#ef4444;background:#fef2f2}
 
-  .search-wrap { position: relative; margin-bottom: 1.5rem; }
-  .search-wrap i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text-faint); pointer-events: none; }
-  .search-input {
-    width: 100%;
-    padding: 10px 12px 10px 38px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
-    font-size: 14px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .search-input:focus { border-color: var(--accent); }
-  .search-input::placeholder { color: var(--text-faint); }
+.add-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px dashed var(--border);border-radius:var(--rs);background:none;font-size:12px;cursor:pointer;color:var(--faint);font-family:inherit;margin-top:8px;transition:all .15s;width:100%;justify-content:center}
+.add-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
 
-  .chapter-header { margin-bottom: 1.5rem; }
-  .chapter-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
-  .chapter-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+/* adobe tabs */
+.adobe-tabs{display:flex;gap:6px;margin-bottom:1rem}
+.adobe-tab{flex:1;padding:9px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:all .12s;box-shadow:var(--shadow)}
+.adobe-tab:hover{border-color:var(--border-h)}
+.adobe-tab.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot-ps{background:#31A8FF}.dot-ai{background:#FF9A00}.dot-id{background:#FF3366}
 
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
-    margin-bottom: 1.5rem;
-  }
+/* search results */
+#searchView{display:none}
+.search-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:10px}
+.highlight{background:#fef08a;border-radius:2px;padding:0 1px}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--faint);font-size:13px}
+.empty i{font-size:28px;display:block;margin-bottom:6px}
 
-  /* Card */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem 1.1rem 0.75rem;
-    box-shadow: var(--shadow);
-    transition: border-color 0.15s;
-    display: flex;
-    flex-direction: column;
-  }
-  .card:hover { border-color: var(--border-hover); }
-  .card-tag {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 2px 7px;
-    border-radius: 99px;
-    margin-bottom: 8px;
-    align-self: flex-start;
-  }
-  .card-icon { font-size: 20px; margin-bottom: 6px; color: var(--text-muted); }
-  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-  .card-desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    white-space: pre-line;
-    flex: 1;
-  }
-  .card-imgs { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
-  .card-imgs img {
-    width: 100%;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    display: block;
-  }
-  .card-imgs img + img { margin-top: 0; }
-  .card-footer { display: flex; justify-content: flex-end; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
-  .card-del {
-    padding: 3px 8px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: none;
-    font-size: 11px;
-    cursor: pointer;
-    color: var(--text-faint);
-    transition: all 0.12s;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .card-del:hover { border-color: #fca5a5; color: #ef4444; background: #fef2f2; }
+/* modal */
+.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.backdrop.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--r);box-shadow:0 20px 60px rgba(0,0,0,.18);padding:1.5rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:1.1rem}
+.fg{margin-bottom:.9rem}
+.fl{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.fi,.ft,.fs{width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:var(--rs);font-size:13px;color:var(--text);background:var(--surface);outline:none;font-family:inherit;transition:border-color .15s}
+.fi:focus,.ft:focus,.fs:focus{border-color:var(--accent)}
+.ft{resize:vertical;min-height:90px}
+.fh{font-size:11px;color:var(--faint);margin-top:3px}
+.modal-actions{display:flex;gap:7px;justify-content:flex-end;margin-top:1.1rem}
+.btn-s{padding:7px 14px;border:1px solid var(--border);border-radius:var(--rs);background:none;font-size:13px;cursor:pointer;color:var(--muted);font-family:inherit}
+.btn-s:hover{background:var(--bg)}
+.btn-p{padding:7px 14px;border:none;border-radius:var(--rs);background:var(--accent);color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit}
+.btn-p:hover{background:#1d4ed8}
 
-  .add-card-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border: 1px dashed var(--border);
-    border-radius: var(--radius);
-    background: none;
-    font-size: 13px;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: all 0.15s;
-    margin-bottom: 2rem;
-  }
-  .add-card-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-
-  /* Modal */
-  .modal-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.35);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-  .modal-backdrop.open { display: flex; }
-  .modal {
-    background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 520px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  .modal-title { font-size: 16px; font-weight: 600; margin-bottom: 1.25rem; }
-  .form-group { margin-bottom: 1rem; }
-  .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
-  .form-input, .form-textarea, .form-select {
-    width: 100%;
-    padding: 9px 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    color: var(--text);
-    background: var(--surface);
-    outline: none;
-    font-family: inherit;
-    transition: border-color 0.15s;
-  }
-  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--accent); }
-  .form-textarea { resize: vertical; min-height: 100px; }
-  .form-hint { font-size: 11px; color: var(--text-faint); margin-top: 4px; }
-  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
-  .btn-secondary {
-    padding: 8px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-    background: none; font-size: 13px; cursor: pointer; color: var(--text-muted); font-family: inherit;
-  }
-  .btn-secondary:hover { background: var(--bg); }
-  .btn-primary {
-    padding: 8px 16px; border: none; border-radius: var(--radius-sm);
-    background: var(--accent); color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
-  }
-  .btn-primary:hover { background: #1d4ed8; }
-
-  /* Adobe tabs */
-  .adobe-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; }
-  .adobe-tab {
-    flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius);
-    background: var(--surface); font-size: 13px; font-weight: 500; cursor: pointer;
-    color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 7px;
-    transition: all 0.15s; box-shadow: var(--shadow); font-family: inherit;
-  }
-  .adobe-tab:hover { border-color: var(--border-hover); color: var(--text); }
-  .adobe-tab.active { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-  .adobe-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
-  .dot-ps { background: #31A8FF; }
-  .dot-ai { background: #FF9A00; }
-  .dot-id { background: #FF3366; }
-
-  .section-label { font-size: 12px; font-weight: 600; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; }
-  .highlight { background: #fef08a; border-radius: 2px; padding: 0 1px; }
-
-  .empty { text-align: center; padding: 3rem 1rem; color: var(--text-faint); font-size: 14px; }
-  .empty i { font-size: 32px; display: block; margin-bottom: 8px; }
-
-  /* Color tags */
-  .tag-01 { background:#EEEDFE; color:#3C3489; }
-  .tag-02 { background:#E1F5EE; color:#0F6E56; }
-  .tag-03 { background:#FAECE7; color:#993C1D; }
-  .tag-04 { background:#E6F1FB; color:#185FA5; }
-  .tag-05 { background:#FAEEDA; color:#854F0B; }
-  .tag-06 { background:#E1F5EE; color:#085041; }
-  .tag-07 { background:#FAECE7; color:#712B13; }
-  .tag-08 { background:#EEEDFE; color:#26215C; }
-  .tag-09 { background:#FBEAF0; color:#993556; }
-  .tag-10 { background:#E6F1FB; color:#0C447C; }
-  .tag-11 { background:#F1EFE8; color:#5F5E5A; }
-  .tag-12 { background:#FAEEDA; color:#633806; }
-  .tag-ps  { background:#e0f4ff; color:#0369a1; }
-  .tag-ai  { background:#fff7ed; color:#c2410c; }
-  .tag-id  { background:#fdf2f8; color:#9d174d; }
-
-  @media (max-width: 700px) {
-    .sidebar { display: none; }
-    .content { padding: 1rem; }
-  }
+/* color tags */
+.t01{background:#EEEDFE;color:#3C3489}.t02{background:#E1F5EE;color:#0F6E56}
+.t03{background:#FAECE7;color:#993C1D}.t04{background:#E6F1FB;color:#185FA5}
+.t05{background:#FAEEDA;color:#854F0B}.t06{background:#E1F5EE;color:#085041}
+.t07{background:#FAECE7;color:#712B13}.t08{background:#EEEDFE;color:#26215C}
+.t09{background:#FBEAF0;color:#993556}.t10{background:#E6F1FB;color:#0C447C}
+.t11{background:#F1EFE8;color:#5F5E5A}.t12{background:#FAEEDA;color:#633806}
+.tps{background:#e0f4ff;color:#0369a1}.tai{background:#fff7ed;color:#c2410c}.tid{background:#fdf2f8;color:#9d174d}
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">Grafikdesign <span>Referenz</span></div>
-  <div style="font-size:12px;color:var(--text-faint);">liselipiseli</div>
+  <div style="font-size:11px;color:var(--faint)">liselipiseli</div>
 </header>
 
-<div class="main-wrap">
+<div class="search-wrap">
+  <i class="ti ti-search" aria-hidden="true"></i>
+  <input class="search-input" type="text" id="searchInput" placeholder="Begriff suchen – Kerning, Ebenenmaske, CMYK …" oninput="doSearch(this.value)">
+</div>
 
-  <nav class="sidebar" id="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Bereich</div>
-      <button class="sidebar-btn active" onclick="switchArea('kurs', this)" id="areaKurs">
-        <i class="ti ti-book-2"></i> Kurskapitel
-      </button>
-      <button class="sidebar-btn" onclick="switchArea('adobe', this)" id="areaAdobe">
-        <i class="ti ti-apps"></i> Adobe Tools
-      </button>
-    </div>
-    <div class="sidebar-section" id="chapterNav"></div>
-  </nav>
+<div class="page">
 
-  <main class="content">
-    <div class="search-wrap">
-      <i class="ti ti-search"></i>
-      <input class="search-input" type="text" id="searchInput" placeholder="Begriff suchen – Kerning, CMYK, Ebenenmaske …" oninput="doSearch(this.value)">
+  <div id="searchView">
+    <div class="search-label" id="searchLabel"></div>
+    <div class="cards" id="searchCards"></div>
+  </div>
+
+  <div id="mainView">
+    <div class="area-switch">
+      <button class="active" onclick="switchArea('kurs',this)" id="areaKurs"><i class="ti ti-book-2" aria-hidden="true"></i> Kurskapitel</button>
+      <button onclick="switchArea('adobe',this)" id="areaAdobe"><i class="ti ti-apps" aria-hidden="true"></i> Adobe Tools</button>
     </div>
 
-    <div id="searchView" style="display:none;">
-      <div class="section-label" id="searchLabel">Suchergebnisse</div>
-      <div class="cards-grid" id="searchCards"></div>
-    </div>
+    <div id="kursView"></div>
 
-    <div id="kursView">
-      <div class="chapter-header">
-        <div class="chapter-title" id="chapterTitle"></div>
-        <div class="chapter-sub" id="chapterSub"></div>
-      </div>
-      <div class="cards-grid" id="kursCards"></div>
-      <button class="add-card-btn" onclick="openModal('kurs')">
-        <i class="ti ti-plus"></i> Neue Karte hinzufügen
-      </button>
-    </div>
-
-    <div id="adobeView" style="display:none;">
+    <div id="adobeView" style="display:none">
       <div class="adobe-tabs">
-        <button class="adobe-tab active" onclick="switchAdobe('ps', this)"><span class="adobe-dot dot-ps"></span>Photoshop</button>
-        <button class="adobe-tab" onclick="switchAdobe('ai', this)"><span class="adobe-dot dot-ai"></span>Illustrator</button>
-        <button class="adobe-tab" onclick="switchAdobe('id', this)"><span class="adobe-dot dot-id"></span>InDesign</button>
+        <button class="adobe-tab active" onclick="switchAdobe('ps',this)"><span class="dot dot-ps"></span>Photoshop</button>
+        <button class="adobe-tab" onclick="switchAdobe('ai',this)"><span class="dot dot-ai"></span>Illustrator</button>
+        <button class="adobe-tab" onclick="switchAdobe('id',this)"><span class="dot dot-id"></span>InDesign</button>
       </div>
-      <div class="chapter-header">
-        <div class="chapter-title" id="adobeTitle">Photoshop</div>
-        <div class="chapter-sub" id="adobeSub"></div>
-      </div>
-      <div class="cards-grid" id="adobeCards"></div>
-      <button class="add-card-btn" onclick="openModal('adobe')">
-        <i class="ti ti-plus"></i> Neue Karte hinzufügen
-      </button>
+      <div id="adobeChapters"></div>
     </div>
-  </main>
+  </div>
+
 </div>
 
 <!-- Modal -->
-<div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOutside(event)">
+<div class="backdrop" id="backdrop" onclick="closeOut(event)">
   <div class="modal">
-    <div class="modal-title" id="modalTitle">Neue Karte</div>
-
-    <div class="form-group">
-      <label class="form-label">Titel *</label>
-      <input class="form-input" type="text" id="fTitle" placeholder="z. B. Ebenenmasken">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Beschreibung *</label>
-      <textarea class="form-textarea" id="fDesc" rows="5" placeholder="Ausführliche Beschreibung, Tipps, Shortcuts …&#10;&#10;Zeilenumbrüche werden übernommen."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Icon (Tabler-Name)</label>
-      <input class="form-input" type="text" id="fIcon" placeholder="ti-layers-intersect" value="ti-file">
-      <div class="form-hint">Optional. Liste: <a href="https://tabler.io/icons" target="_blank" style="color:var(--accent)">tabler.io/icons</a></div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Bild-URLs (eine pro Zeile)</label>
-      <textarea class="form-textarea" id="fImgs" rows="3" placeholder="https://…&#10;https://… (mehrere möglich)"></textarea>
-      <div class="form-hint">Links zu Bildern – z. B. aus deinem GitHub-Repo oder hochgeladen auf imgur.com</div>
-    </div>
-    <div class="form-group" id="chapterPickGroup">
-      <label class="form-label">Kapitel</label>
-      <select class="form-select" id="fChapter"></select>
-    </div>
-
+    <div class="modal-title" id="mTitle">Neue Karte</div>
+    <div class="fg"><label class="fl">Titel *</label><input class="fi" type="text" id="fT" placeholder="z. B. Ebenenmasken"></div>
+    <div class="fg"><label class="fl">Beschreibung *</label><textarea class="ft" id="fD" rows="5" placeholder="Ausführliche Beschreibung, Tipps, Shortcuts …&#10;&#10;Zeilenumbrüche werden übernommen."></textarea></div>
+    <div class="fg"><label class="fl">Icon (Tabler-Name)</label><input class="fi" type="text" id="fI" placeholder="ti-layers-intersect" value="ti-file"><div class="fh">Optional. Liste: <a href="https://tabler.io/icons" target="_blank" style="color:var(--accent)">tabler.io/icons</a></div></div>
+    <div class="fg"><label class="fl">Bild-URLs (eine pro Zeile)</label><textarea class="ft" id="fU" rows="3" placeholder="https://…&#10;https://…"></textarea><div class="fh">Bilder aus deinem GitHub-Repo oder imgur.com verlinken</div></div>
+    <div class="fg" id="fCG"><label class="fl">Kapitel</label><select class="fs" id="fC"></select></div>
     <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeModal()">Abbrechen</button>
-      <button class="btn-primary" onclick="saveCard()">Speichern</button>
+      <button class="btn-s" onclick="closeModal()">Abbrechen</button>
+      <button class="btn-p" onclick="saveCard()">Speichern</button>
     </div>
   </div>
 </div>
 
 <script>
-const CHAPTERS = [
-  { id:'c01', num:'01', title:'Grundlagen der Gestaltung' },
-  { id:'c02', num:'02', title:'Farbe und Farbsysteme' },
-  { id:'c03', num:'03', title:'Bild, Bildbearbeitung & KI' },
-  { id:'c04', num:'04', title:'Typografie und Schrift' },
-  { id:'c05', num:'05', title:'Zeichen, Piktogramme & Icons' },
-  { id:'c06', num:'06', title:'Layout und Editorialdesign' },
-  { id:'c07', num:'07', title:'Logodesign' },
-  { id:'c08', num:'08', title:'Corporate Design' },
-  { id:'c09', num:'09', title:'Marketing und Werbung' },
-  { id:'c10', num:'10', title:'Screen und Interfacedesign' },
-  { id:'c11', num:'11', title:'Designmanagement' },
-  { id:'c12', num:'12', title:'Designgeschichte & Abschlussprojekt' },
+const CH = [
+  {id:'c01',n:'01',t:'Grundlagen der Gestaltung'},
+  {id:'c02',n:'02',t:'Farbe und Farbsysteme'},
+  {id:'c03',n:'03',t:'Bild, Bildbearbeitung & KI'},
+  {id:'c04',n:'04',t:'Typografie und Schrift'},
+  {id:'c05',n:'05',t:'Zeichen, Piktogramme & Icons'},
+  {id:'c06',n:'06',t:'Layout und Editorialdesign'},
+  {id:'c07',n:'07',t:'Logodesign'},
+  {id:'c08',n:'08',t:'Corporate Design'},
+  {id:'c09',n:'09',t:'Marketing und Werbung'},
+  {id:'c10',n:'10',t:'Screen und Interfacedesign'},
+  {id:'c11',n:'11',t:'Designmanagement'},
+  {id:'c12',n:'12',t:'Designgeschichte & Abschlussprojekt'},
 ];
+const AP = {ps:'Photoshop',ai:'Illustrator',id:'InDesign'};
+const TAG = {c01:'t01',c02:'t02',c03:'t03',c04:'t04',c05:'t05',c06:'t06',c07:'t07',c08:'t08',c09:'t09',c10:'t10',c11:'t11',c12:'t12',ps:'tps',ai:'tai',id:'tid'};
+const TAGLABEL = k => k.startsWith('c') ? CH.find(c=>c.id===k)?.n : AP[k];
 
-const ADOBE_PROGRAMS = { ps:'Photoshop', ai:'Illustrator', id:'InDesign' };
-
-const DEFAULT_CARDS = {
+const DC = {
   c01:[
-    { id:'d01a', icon:'ti-layout-grid', title:'Gestaltungsprinzipien', desc:'Kontrast, Wiederholung, Ausrichtung, Nähe – die vier Grundprinzipien nach Robin Williams.' },
-    { id:'d01b', icon:'ti-eye', title:'Wahrnehmungspsychologie', desc:'Gestaltgesetze: Nähe, Ähnlichkeit, Kontinuität, Geschlossenheit – wie das Auge Gruppen bildet und Bilder scannt.' },
+    {id:'d01a',icon:'ti-layout-grid',title:'Gestaltungsprinzipien',desc:'Kontrast, Wiederholung, Ausrichtung, Nähe – die vier Grundprinzipien nach Robin Williams.'},
+    {id:'d01b',icon:'ti-eye',title:'Wahrnehmungspsychologie',desc:'Gestaltgesetze: Nähe, Ähnlichkeit, Kontinuität, Geschlossenheit – wie das Auge Gruppen bildet.'},
   ],
   c02:[
-    { id:'d02a', icon:'ti-palette', title:'RGB vs. CMYK', desc:'RGB (additiv) = für Bildschirm – Farbe entsteht durch Licht.\nCMYK (subtraktiv) = für Druck – Farbe entsteht durch Reflexion/Absorption.\n\nRGB-Werte: 0–255 | CMYK-Werte: 0–100 %' },
-    { id:'d02b', icon:'ti-color-swatch', title:'Farbharmonien', desc:'Komplementär, analog, triadisch, split-komplementär – Farbkombinationen gezielt einsetzen.' },
+    {id:'d02a',icon:'ti-palette',title:'RGB vs. CMYK',desc:'RGB (additiv) = Bildschirm – Farbe durch Licht.\nCMYK (subtraktiv) = Druck – Farbe durch Reflexion.\n\nRGB: 0–255 | CMYK: 0–100 %'},
+    {id:'d02b',icon:'ti-color-swatch',title:'Farbharmonien',desc:'Komplementär, analog, triadisch, split-komplementär – Farbkombinationen gezielt einsetzen.'},
   ],
   c03:[
-    { id:'d03a', icon:'ti-photo', title:'Bildkomposition', desc:'Drittelregel, Fluchtpunkt, Rahmung – bewusst fotografieren und ausschneiden.' },
-    { id:'d03b', icon:'ti-adjustments', title:'Exportformate', desc:'JPEG – verlustbehaftet, gut für Fotos und Web\nPNG – verlustfrei, mit Transparenz\nTIFF – verlustfrei, ideal für Druck (300 dpi)\nWebP – modernes Webformat, kleiner als JPEG\nSVG – Vektorformat, beliebig skalierbar' },
-    { id:'d03c', icon:'ti-robot', title:'KI in der Bildbearbeitung', desc:'Generative Füllung (PS): KI erstellt Bildbereiche nahtlos\nEntfernen-Werkzeug: Objekte rot markieren → KI entfernt sie\nKI-Indizien: merkwürdige Hände, zu glatte Haut, unnatürliche Belichtung' },
+    {id:'d03a',icon:'ti-photo',title:'Bildkomposition',desc:'Drittelregel, Fluchtpunkt, Rahmung – bewusst fotografieren und ausschneiden.'},
+    {id:'d03b',icon:'ti-adjustments',title:'Exportformate',desc:'JPEG – verlustbehaftet, Fotos & Web\nPNG – verlustfrei, mit Transparenz\nTIFF – verlustfrei, Druck (300 dpi)\nWebP – modernes Web, kleiner als JPEG\nSVG – Vektorformat, beliebig skalierbar'},
+    {id:'d03c',icon:'ti-robot',title:'KI in der Bildbearbeitung',desc:'Generative Füllung: KI erstellt Bildbereiche nahtlos\nEntfernen-Werkzeug: Objekte rot markieren → KI entfernt\nKI-Indizien: merkwürdige Hände, zu glatte Haut, unnatürliche Belichtung'},
   ],
   c04:[
-    { id:'d04a', icon:'ti-letter-t', title:'Schriftklassen', desc:'Serif, Sans-Serif, Monospace, Display – Wirkung und Einsatzbereiche.' },
-    { id:'d04b', icon:'ti-line-height', title:'Mikrotypografie', desc:'Kerning = Abstand zwischen zwei Zeichen\nTracking = globaler Zeichenabstand\nLeading = Zeilenabstand (optimal: 120–145 % der Schriftgröße)' },
+    {id:'d04a',icon:'ti-letter-t',title:'Schriftklassen',desc:'Serif, Sans-Serif, Monospace, Display – Wirkung und Einsatzbereiche.'},
+    {id:'d04b',icon:'ti-line-height',title:'Mikrotypografie',desc:'Kerning = Abstand zwischen zwei Zeichen\nTracking = globaler Zeichenabstand\nLeading = Zeilenabstand (optimal: 120–145 % der Schriftgröße)'},
   ],
   c05:[
-    { id:'d05a', icon:'ti-icons', title:'Icon-Systeme', desc:'Konsistente Sets: gleiche Strichstärke, gleicher Stil, gleiches Raster.' },
-    { id:'d05b', icon:'ti-vector', title:'Piktogrammgestaltung', desc:'Reduktion auf das Wesentliche – komplexe Inhalte in einfache Formen überführen.' },
+    {id:'d05a',icon:'ti-icons',title:'Icon-Systeme',desc:'Konsistente Sets: gleiche Strichstärke, gleicher Stil, gleiches Raster.'},
+    {id:'d05b',icon:'ti-vector',title:'Piktogrammgestaltung',desc:'Reduktion auf das Wesentliche – komplexe Inhalte in einfache Formen überführen.'},
   ],
   c06:[
-    { id:'d06a', icon:'ti-layout-columns', title:'Rastersysteme', desc:'Spalten-, Modul- und Grundlinienraster für konsistente mehrseitige Layouts.' },
-    { id:'d06b', icon:'ti-file-text', title:'Editorial Design', desc:'Satzspiegelkonstruktion und Leseführung in Magazinen und Büchern.' },
+    {id:'d06a',icon:'ti-layout-columns',title:'Rastersysteme',desc:'Spalten-, Modul- und Grundlinienraster für konsistente mehrseitige Layouts.'},
+    {id:'d06b',icon:'ti-file-text',title:'Editorial Design',desc:'Satzspiegelkonstruktion und Leseführung in Magazinen und Büchern.'},
   ],
   c07:[
-    { id:'d07a', icon:'ti-circle', title:'Logoformen', desc:'Wortmarke, Bildmarke, Kombinations-, Buchstaben- und Emblemmarke.' },
-    { id:'d07b', icon:'ti-rulers', title:'Schutzzone & Skalierung', desc:'Mindestgröße, Schutzzone, Schwarz-Weiß-Version – Grundregeln der Logonutzung.\nVektoren (SVG, AI, EPS) für verlustfreie Skalierung verwenden.' },
+    {id:'d07a',icon:'ti-circle',title:'Logoformen',desc:'Wortmarke, Bildmarke, Kombinations-, Buchstaben- und Emblemmarke.'},
+    {id:'d07b',icon:'ti-rulers',title:'Schutzzone & Skalierung',desc:'Mindestgröße, Schutzzone, Schwarz-Weiß-Version definieren.\nVektoren (SVG, AI, EPS) für verlustfreie Skalierung.'},
   ],
   c08:[
-    { id:'d08a', icon:'ti-file-description', title:'Brand Guidelines', desc:'Farbe, Schrift, Bildsprache, Ton – wie ein konsistentes Markenbild entsteht.' },
-    { id:'d08b', icon:'ti-building', title:'Corporate Identity', desc:'CD (Corporate Design) = sichtbares Erscheinungsbild\nCI (Corporate Identity) = Haltung, Werte, Unternehmenskultur' },
+    {id:'d08a',icon:'ti-file-description',title:'Brand Guidelines',desc:'Farbe, Schrift, Bildsprache, Ton – konsistentes Markenbild definieren.'},
+    {id:'d08b',icon:'ti-building',title:'Corporate Identity vs. Design',desc:'CD = sichtbares Erscheinungsbild\nCI = Haltung, Werte, Unternehmenskultur'},
   ],
   c09:[
-    { id:'d09a', icon:'ti-speakerphone', title:'Werbemittel', desc:'Print vs. Digital – Formate, Auflösungen und Besonderheiten je Medium.' },
-    { id:'d09b', icon:'ti-target', title:'Zielgruppenanalyse', desc:'Gestaltung auf Alter, Kontext und Kultur abstimmen.' },
+    {id:'d09a',icon:'ti-speakerphone',title:'Werbemittel',desc:'Print vs. Digital – Formate, Auflösungen und Besonderheiten je Medium.'},
+    {id:'d09b',icon:'ti-target',title:'Zielgruppenanalyse',desc:'Gestaltung auf Alter, Kontext und Kultur abstimmen.'},
   ],
   c10:[
-    { id:'d10a', icon:'ti-device-mobile', title:'UI-Grundlagen', desc:'Grid-Systeme, Abstände, Touch-Targets für digitale Oberflächen.' },
-    { id:'d10b', icon:'ti-accessible', title:'Barrierefreiheit', desc:'WCAG-Kontrastverhältnisse, Schriftgrößen, Screenreader-freundliche Gestaltung.' },
+    {id:'d10a',icon:'ti-device-mobile',title:'UI-Grundlagen',desc:'Grid-Systeme, Abstände, Touch-Targets für digitale Oberflächen.'},
+    {id:'d10b',icon:'ti-accessible',title:'Barrierefreiheit',desc:'WCAG-Kontrastverhältnisse, Schriftgrößen, Screenreader-freundliche Gestaltung.'},
   ],
   c11:[
-    { id:'d11a', icon:'ti-briefcase', title:'Projektablauf', desc:'Briefing → Konzept → Entwurf → Feedback → Reinzeichnung – der typische Designprozess.' },
-    { id:'d11b', icon:'ti-users', title:'Kundenumgang', desc:'Feedback annehmen, Entscheidungen dokumentieren, Präsentationen strukturieren.' },
+    {id:'d11a',icon:'ti-briefcase',title:'Projektablauf',desc:'Briefing → Konzept → Entwurf → Feedback → Reinzeichnung'},
+    {id:'d11b',icon:'ti-users',title:'Kundenumgang',desc:'Feedback annehmen, Entscheidungen dokumentieren, Präsentationen strukturieren.'},
   ],
   c12:[
-    { id:'d12a', icon:'ti-clock-history', title:'Designgeschichte', desc:'Bauhaus, Swiss Style, Postmoderne, Digital Age – prägende Epochen und ihre Merkmale.' },
-    { id:'d12b', icon:'ti-trophy', title:'Abschlussprojekt', desc:'Eigene Designarbeit von der Idee bis zur fertigen Präsentation.' },
+    {id:'d12a',icon:'ti-clock-history',title:'Designgeschichte',desc:'Bauhaus, Swiss Style, Postmoderne, Digital Age – Epochen und Merkmale.'},
+    {id:'d12b',icon:'ti-trophy',title:'Abschlussprojekt',desc:'Eigene Designarbeit von der Idee bis zur fertigen Präsentation.'},
   ],
   ps:[
-    {
-      id:'dps1', icon:'ti-apps', title:'Oberfläche & Navigation',
-      desc:'Menüleiste (oben) | Werkzeugleiste (links) | Optionsleiste (Steuerungsbedienfeld) | Paletten (Fenster)\n\nWichtige Shortcuts:\nSTRG+Z – Rückgängig (einmalig)\nSTRG+Y – Wiederholen\nSTRG+N – Neues Dokument\nSTRG+S – Speichern\nSTRG+W – Dokument schließen\n\nProtokoll-Palette: letzte 20 Schritte rückgängig machen (STRG+Z geht nur einmal!)'
-    },
-    {
-      id:'dps2', icon:'ti-vector-triangle', title:'Pixel vs. Vektor',
-      desc:'PIXEL (Photoshop):\n– Raster aus winzigen rechteckigen Punkten\n– Bei Vergrößerung Qualitätsverlust\n– Ideal für fotorealistische Darstellungen\n– Benötigen viel Speicher\n\nVEKTOR (Illustrator):\n– Mathematisch definierte Ankerpunkte & Kurven\n– Beliebig skalierbar, immer scharf\n– Kein Fotorealismus möglich\n– Geringer Speicherbedarf\n\nEinsatz Photoshop: Bildkorrektur, Bildmontage, Composing, Retusche'
-    },
-    {
-      id:'dps3', icon:'ti-ruler-measure', title:'Bildmaße & Auflösung',
-      desc:'Bildmaße: immer in Pixel (z. B. 800×600 px)\n\nAuflösung:\n– Bildschirm: 72 ppi (Pixel pro Inch)\n– Professioneller Druck: 300 dpi\n– 1 Inch = 2,54 cm = ca. 118 Pixel/cm bei 300 dpi\n\nBeispielrechnung:\n800 px ÷ 118 = 6,77 cm Druckbreite\n15 cm × 118 = 1.770 px benötigt\n\nNeues Dokument: Datei > Neu oder STRG+N\nFarbmodus: RGB (Bildschirm) oder CMYK (Druck)'
-    },
-    {
-      id:'dps4', icon:'ti-palette', title:'Farbmodelle',
-      desc:'RGB – Additiv:\n– Rot, Grün, Blau (Licht)\n– Werte 0–255 (8 Bit = 256 Werte)\n– Für Bildschirm, Beamer, Kamera\n– Alle drei voll → Weiß | keine Farbe → Schwarz\n\nCMYK – Subtraktiv:\n– Cyan, Magenta, Yellow, Black\n– Werte 0–100 %\n– Für (Vier-)Farbdruck\n– Schwarz extra, da Mischen kein reines Schwarz ergibt\n\nFarbtiefe = max. Anzahl Werte, die ein Farbton annehmen kann'
-    },
-    {
-      id:'dps5', icon:'ti-tools', title:'Werkzeugleiste – Übersicht',
-      desc:'V – Verschieben-Werkzeug\nM – Auswahl-Werkzeug (Rechteck)\nL – Lasso-Werkzeug (Freihand-Auswahl)\nC – Freistellungswerkzeug (Zuschneiden)\nI – Pipette (Farbe aufnehmen)\nB – Pinsel-Werkzeug (freies Malen)\nT – Text-Werkzeug\nU – Formen-Werkzeug (Vektorformen)\nH – Hand-Werkzeug (Bildansicht verschieben, Leertaste)\nZ – Zoom-Werkzeug (ALT = verkleinern)\nF – Ansichten wechseln (3 Modi)\n\nVorder-/Hintergrundfarbe: Doppelpfeil tauscht, Klick öffnet Farbwähler'
-    },
-    {
-      id:'dps6', icon:'ti-adjustments-horizontal', title:'Bildkorrekturen',
-      desc:'Bild > Korrekturen\n\nHelligkeit & Kontrast – einfach, gleichmäßige Anpassung\n\nTonwertkorrektur – präziser:\n– Linker Regler = dunkle Töne\n– Mittlerer Regler = Grauwerte\n– Rechter Regler = helle Töne\n– Weiße Kurve zeigt Tonwertverteilung\n\nGradationskurven (STRG+M) – flexibelste Methode, komplexer\n\nFarbton/Sättigung (STRG+U):\n– Farbton = genauer Ton im Farbkreis\n– Sättigung = Intensität (0 = Schwarz-Weiß)\n– Checkbox "Färben" = Bild einfärben\n– Handsymbol-Lieblingstool: Bereich im Bild anklicken, dann Regler\n\nFarbbalance = Farbstiche entfernen/hinzufügen (Tiefen/Mitteltöne/Lichter)\n\n⚠ Alles oben = destruktiv!\nNicht-destruktiv: Palette "Korrekturen" (Einstellungsebenen)'
-    },
-    {
-      id:'dps7', icon:'ti-layers-intersect', title:'Ebenen & Masken',
-      desc:'Ebenen = Folien übereinander – transparente Bereiche sichtbar\n\nEbenenpalette:\n– Neue Ebene: Plus-Symbol\n– Löschen: Entfernen-Taste oder Papierkorb\n– Reihenfolge: Drag & Drop\n– Deckkraft: oben einstellbar\n– Gruppen: Ordner für mehrere Ebenen\n\nHintergrundebene ist gesperrt → Doppelklick zum Entsperren\n\nEbene transformieren:\n– STRG+T = Frei transformieren\n– SHIFT halten = proportional\n– RETURN = Transformation beenden\n\nEBENENMASKEN (nicht-destruktiv!):\n– Weiß = sichtbar | Schwarz = transparent | Grau = teiltransparent\n– Mit Pinsel schwarz/weiß malen zum Maskieren\n– Maske löschen: auf Papierkorb ziehen\n\nEINSTELLUNGSEBENEN:\n– Korrekturen nicht-destruktiv über Ebenen legen\n– Palette "Korrekturen" rechts\n\nSCHNITTMASKE:\n– Rechtsklick > Schnittmaske erstellen\n– Obere Ebene auf Form der unteren zuschneiden'
-    },
-    {
-      id:'dps8', icon:'ti-file-type-jpg', title:'Dateiformate',
-      desc:'PSD – Photoshop-Format, alle Einstellungen erhalten → immer als PSD speichern!\n\nJPEG – verlustbehaftet, komprimierbar\n– 70–90 % Qualität empfohlen\n– Kein Transparenz-Support\n– Für Fotos (Web + hochauflösender Druck)\n\nPNG – verlustfrei, mit Transparenz\n– Für Web, Icons, Logos\n\nTIFF – verlustfrei wie PNG, aber für Druck optimiert\n– Große Dateien\n\nGIF – nur 256 Farben, Animationen möglich, für Web\n\nDateeigröße hängt ab von:\nBreite × Höhe × Auflösung × Farbtiefe × Farbmodus\n(CMYK = 4 Farbwerte statt 3 bei RGB → größere Datei)\n\nPrint: CMYK, 300 dpi, TIFF oder JPEG hoch\nWeb: RGB, Pixelmaße entscheidend, JPEG/PNG/WebP'
-    },
-    {
-      id:'dps9', icon:'ti-stars', title:'Smartobjekte & Filter',
-      desc:'SMARTOBJEKTE (nicht-destruktiv):\n– Bild in Dokument ziehen → wird automatisch Smartobjekt\n– Originalpixel bleiben bei Skalierung erhalten → immer scharf\n– Nachträglich konvertieren: Ebene > Smartobjekt > In Smartobjekt\n– In Pixelebene umwandeln: Ebene > Rastern\n\nFILTER (Menü > Filter):\n– Scharf zeichnen: Scharfzeichnungsfilter > Unscharf maskieren\n  (größeres Bild = größere Werte für Stärke & Radius)\n– Weichzeichnen: Filter > Weichzeichnungsfilter > Gaußscher Weichzeichner\n  (hoher Wert = ansprechende Hintergründe)\n\nEBENENSTILE:\n– Textebene auswählen > fx in Ebenenpalette\n– Schatten, Leuchten, Abschrägung etc.'
-    },
-    {
-      id:'dps10', icon:'ti-robot', title:'KI & Generative Füllung',
-      desc:'GENERATIVE FÜLLUNG:\n– Fenster > Kontextbezogene Taskleiste\n– Auswahl treffen > Generative Füllung > Begriff eintippen\n– Aus 3 Varianten wählen\n– Ergebnis = separate Ebene (nicht-destruktiv)\n\nENTFERNEN-WERKZEUG:\n– Unerwünschte Objekte rot anmalen → KI entfernt sie\n\nKI-INDIZIEN erkennen:\n– Merkwürdige Hände (falsche Fingeranzahl)\n– Zu glatte, perfekte Haut\n– Unförmige Architektur/Fenster\n– Falsche Beschriftungen\n– Unnatürliche Belichtung & Schatten\n– Sehr weich gezeichnete Hintergründe\n\nRechtliches:\n– Urheberrecht & Persönlichkeitsrechte bei KI-Bildern noch ungeklärt\n– Prompt-Qualität entscheidet über Ergebnisqualität\n– Englische Prompts oft besser bei Bildgeneratoren'
-    },
+    {id:'dps1',icon:'ti-apps',title:'Oberfläche & Navigation',desc:'Menüleiste (oben) | Werkzeugleiste (links) | Optionsleiste | Paletten (Fenster)\n\nShortcuts:\nSTRG+Z – Rückgängig (einmalig!)\nSTRG+Y – Wiederholen\nSTRG+N – Neues Dokument\nSTRG+S – Speichern\nSTRG+W – Schließen\n\nProtokoll-Palette: letzte 20 Schritte rückgängig (STRG+Z geht nur einmal!)'},
+    {id:'dps2',icon:'ti-vector-triangle',title:'Pixel vs. Vektor',desc:'PIXEL (Photoshop):\n– Raster aus winzigen rechteckigen Punkten\n– Bei Vergrößerung Qualitätsverlust\n– Ideal für fotorealistische Darstellungen\n– Benötigen viel Speicher\n\nVEKTOR (Illustrator):\n– Mathematisch definierte Ankerpunkte & Kurven\n– Beliebig skalierbar, immer scharf\n– Kein Fotorealismus möglich\n– Geringer Speicherbedarf\n\nEinsatz PS: Bildkorrektur, Montage, Composing, Retusche'},
+    {id:'dps3',icon:'ti-ruler-measure',title:'Bildmaße & Auflösung',desc:'Bildmaße: immer in Pixel (z. B. 800×600 px)\n\nAuflösung:\n– Bildschirm: 72 ppi\n– Druck: 300 dpi (= ca. 118 px/cm)\n\nBeispiel:\n800 px ÷ 118 = 6,77 cm Druckbreite\n15 cm × 118 = 1.770 px benötigt\n\nNeues Dokument: Datei > Neu oder STRG+N\nFarbmodus: RGB (Bildschirm) oder CMYK (Druck)'},
+    {id:'dps4',icon:'ti-palette',title:'Farbmodelle',desc:'RGB – Additiv:\n– Rot, Grün, Blau (Licht)\n– Werte 0–255 pro Kanal (8 Bit)\n– Bildschirm, Beamer, Kamera\n– Alle voll → Weiß | keine → Schwarz\n\nCMYK – Subtraktiv:\n– Cyan, Magenta, Yellow, Black\n– Werte 0–100 %\n– Vierfarbdruck\n– Schwarz extra, da Mischen kein reines Schwarz ergibt'},
+    {id:'dps5',icon:'ti-tools',title:'Werkzeugleiste',desc:'V – Verschieben\nM – Auswahl (Rechteck)\nL – Lasso (Freihand)\nC – Freistellen (Zuschneiden)\nI – Pipette (Farbe aufnehmen)\nB – Pinsel\nT – Text\nU – Formen (Vektorformen)\nH – Hand (Ansicht verschieben, Leertaste)\nZ – Zoom (ALT = verkleinern)\nF – Ansichten (3 Modi)\n\nVorder-/Hintergrundfarbe: Doppelpfeil tauscht, Klick öffnet Farbwähler'},
+    {id:'dps6',icon:'ti-adjustments-horizontal',title:'Bildkorrekturen',desc:'Bild > Korrekturen\n\nHelligkeit & Kontrast – gleichmäßige Anpassung\n\nTonwertkorrektur – präziser:\n– Links = dunkle Töne | Mitte = Grau | Rechts = helle Töne\n– Weiße Kurve = Tonwertverteilung\n\nGradationskurven (STRG+M) – flexibelste Methode\n\nFarbton/Sättigung (STRG+U):\n– Farbton = genauer Ton im Farbkreis\n– Sättigung = Intensität (0 = SW-Bild)\n– Checkbox "Färben" = Bild einfärben\n– Handsymbol: Bereich im Bild anklicken → Regler\n\nFarbbalance = Farbstiche in Tiefen/Mitteltönen/Lichtern\n\n⚠ Alles oben = DESTRUKTIV\nNicht-destruktiv: Palette "Korrekturen" (Einstellungsebenen)'},
+    {id:'dps7',icon:'ti-layers-intersect',title:'Ebenen & Masken',desc:'Ebenen = Folien übereinander, transparente Bereiche bleiben leer\n\nEbenenpalette:\n– Neue Ebene: Plus-Symbol\n– Löschen: Entfernen oder Papierkorb\n– Reihenfolge: Drag & Drop\n– Deckkraft: oben\n– Gruppen: Ordner für Ebenen\n\nHintergrundebene gesperrt → Doppelklick zum Entsperren\n\nTransformieren: STRG+T (SHIFT = proportional, ENTER = fertig)\n\nEBENENMASKEN (nicht-destruktiv):\n– Weiß = sichtbar | Schwarz = transparent | Grau = teiltransparent\n– Mit Pinsel malen zum Maskieren\n– Icon "Maske hinzufügen" in Ebenenpalette\n\nSCHNITTMASKE:\n– Rechtsklick > Schnittmaske erstellen\n– Obere Ebene auf Form der unteren zuschneiden\n\nEBENENMODUS:\n– Normal = Ebene sichtbar drüber\n– Multiplizieren = mit unterer verrechnen'},
+    {id:'dps8',icon:'ti-file-type-jpg',title:'Dateiformate',desc:'PSD – Photoshop-eigenes Format, alle Einstellungen erhalten → immer zusätzlich speichern!\n\nJPEG – verlustbehaftet, komprimierbar\n– 70–90 % Qualität empfohlen\n– Kein Transparenz-Support\n– Web + hochauflösender Druck\n\nPNG – verlustfrei, mit Transparenz\n– Web, Icons, Logos\n\nTIFF – verlustfrei, für Druck optimiert\n– Große Datei\n\nGIF – nur 256 Farben, Animationen möglich\n\nPrint: CMYK, 300 dpi, TIFF oder JPEG hoch\nWeb: RGB, Pixelmaße, JPEG/PNG/WebP'},
+    {id:'dps9',icon:'ti-stars',title:'Smartobjekte & Filter',desc:'SMARTOBJEKTE (nicht-destruktiv):\n– Bild reinziehen → automatisch Smartobjekt\n– Originalpixel bleiben bei Skalierung erhalten\n– Konvertieren: Ebene > Smartobjekt > In Smartobjekt\n– Rastern: Ebene > Rastern\n\nFILTER:\n– Scharf zeichnen: Filter > Scharfzeichnungsfilter > Unscharf maskieren\n– Weichzeichnen: Filter > Weichzeichnungsfilter > Gaußscher Weichzeichner\n  (hoher Wert = ansprechende Hintergründe)\n\nEBENENSTILE:\n– Ebene auswählen > fx in Ebenenpalette\n– Schatten, Leuchten, Abschrägung etc.'},
+    {id:'dps10',icon:'ti-robot',title:'KI & Generative Füllung',desc:'GENERATIVE FÜLLUNG:\n– Auswahl treffen > "Generative Füllung" > Begriff eintippen\n– Aus 3 Varianten wählen\n– Ergebnis = separate Ebene (nicht-destruktiv)\n\nENTFERNEN-WERKZEUG:\n– Unerwünschte Objekte rot anmalen → KI entfernt\n\nKI-INDIZIEN erkennen:\n– Falsche Fingeranzahl\n– Zu glatte, perfekte Haut\n– Unförmige Architektur\n– Falsche Beschriftungen\n– Unnatürliche Belichtung & Schatten\n– Weich gezeichnete Hintergründe\n\nRechtliches:\n– Urheberrecht & Persönlichkeitsrechte ungeklärt\n– EU-AI Act: wer KI nutzt, unterliegt der Regulierung\n– Englische Prompts oft bessere Ergebnisse bei Bildgeneratoren'},
   ],
   ai:[
-    { id:'dai1', icon:'ti-vector', title:'Ankerpunkte & Pfade', desc:'Bézier-Kurven: glatte vs. eckige Ankerpunkte\nPfade verbinden, schneiden und bearbeiten\nStift-Werkzeug (P) für präzise Vektorpfade' },
-    { id:'dai2', icon:'ti-topology-star', title:'Pathfinder', desc:'Vereinen – Formen zusammenfassen\nAbziehen – Form aus anderer ausschneiden\nSchnittmenge – nur überlappenden Bereich behalten\n\nFenster > Pathfinder' },
-    { id:'dai3', icon:'ti-letter-t', title:'Schrift in Pfade', desc:'Schrift > In Pfade umwandeln\n→ drucksichere Dateien ohne Schriftabhängigkeiten\n→ Schrift kann danach nicht mehr bearbeitet werden\n→ vorher Kopie der Textebene sichern!' },
-    { id:'dai4', icon:'ti-artboard', title:'Zeichenflächen', desc:'Mehrere Formate in einem Dokument verwalten\nZeichenflächen-Werkzeug (SHIFT+O)\nJede Fläche kann separat exportiert werden\nIdeal für Logoentwicklung (verschiedene Varianten)' },
+    {id:'dai1',icon:'ti-vector',title:'Ankerpunkte & Pfade',desc:'Bézier-Kurven: glatte vs. eckige Ankerpunkte\nPfade verbinden, schneiden und bearbeiten\nStift-Werkzeug (P) für präzise Vektorpfade'},
+    {id:'dai2',icon:'ti-topology-star',title:'Pathfinder',desc:'Vereinen – Formen zusammenfassen\nAbziehen – Form aus anderer ausschneiden\nSchnittmenge – nur Überlappung behalten\n\nFenster > Pathfinder'},
+    {id:'dai3',icon:'ti-letter-t',title:'Schrift in Pfade',desc:'Schrift > In Pfade umwandeln\n→ drucksichere Dateien ohne Schriftabhängigkeiten\n→ danach nicht mehr bearbeitbar – vorher Kopie!'},
+    {id:'dai4',icon:'ti-artboard',title:'Zeichenflächen',desc:'Mehrere Formate in einem Dokument\nZeichenflächen-Werkzeug: SHIFT+O\nJede Fläche separat exportierbar'},
   ],
   id:[
-    { id:'did1', icon:'ti-layout-grid', title:'Musterseiten', desc:'Wiederkehrende Elemente einmal definieren:\nSeitenzahl, Logo, Ränder, Kopf-/Fußzeilen\n\nMusterseiten auf beliebige Dokumentseiten anwenden\nÄnderung auf Musterseite = Änderung auf allen verknüpften Seiten' },
-    { id:'did2', icon:'ti-text-wrap', title:'Textfluss', desc:'Verkettete Textrahmen für automatischen Fluss über mehrere Seiten\n\nKlick auf Ausflussport > Klick auf neue Seite → Rahmen verkettet\nKlein rotes Plus = Text überläuft aktuellen Rahmen' },
-    { id:'did3', icon:'ti-color-filter', title:'Absatz- & Zeichenformate', desc:'Formatvorlagen für konsistente Typografie im gesamten Dokument\n\nAbsatzformat = ganzer Absatz (Schrift, Größe, Abstand, Ausrichtung)\nZeichenformat = einzelne Zeichen/Wörter\n\nFenster > Formate > Absatzformate / Zeichenformate' },
-    { id:'did4', icon:'ti-printer', title:'Druckausgabe & Export', desc:'Preflight: Fehlercheck vor Export (Fenster > Ausgabe > Preflight)\n\nPDF exportieren: Datei > Exportieren > Adobe PDF (Druck)\n– Format: PDF/X-4\n– Anschnitt: mind. 3 mm\n– Druckmarken aktivieren\n– Alle Schriften einbetten' },
+    {id:'did1',icon:'ti-layout-grid',title:'Musterseiten',desc:'Wiederkehrende Elemente einmal definieren:\nSeitenzahl, Logo, Ränder, Kopf-/Fußzeilen\n\nÄnderung auf Musterseite = Änderung überall'},
+    {id:'did2',icon:'ti-text-wrap',title:'Textfluss',desc:'Verkettete Textrahmen für automatischen Fluss\n\nKlick auf Ausflussport > Klick neue Seite\nKleines rotes Plus = Text läuft über'},
+    {id:'did3',icon:'ti-color-filter',title:'Absatz- & Zeichenformate',desc:'Formatvorlagen für konsistente Typografie\n\nAbsatzformat = ganzer Absatz\nZeichenformat = einzelne Wörter/Zeichen\n\nFenster > Formate'},
+    {id:'did4',icon:'ti-printer',title:'Druckausgabe & Export',desc:'Preflight: Fehlercheck vor Export\n\nPDF/X exportieren:\n– Anschnitt: mind. 3 mm\n– Druckmarken aktivieren\n– Schriften einbetten'},
   ],
 };
 
-let area = 'kurs';
-let currentChapter = 'c01';
-let currentAdobe = 'ps';
-let modalContext = 'kurs';
+let curArea='kurs', curAdobe='ps', mCtx='kurs';
+const openChapters = new Set();
 
-function loadState() {
-  try { return JSON.parse(localStorage.getItem('gd-ref-v2') || '{}'); } catch(e) { return {}; }
-}
-function saveState(state) { localStorage.setItem('gd-ref-v2', JSON.stringify(state)); }
+function ls(){try{return JSON.parse(localStorage.getItem('gd3')||'{}')}catch{return{}}}
+function ss(s){localStorage.setItem('gd3',JSON.stringify(s))}
+function getCards(k){const s=ls();return s.cards&&s.cards[k]?s.cards[k]:DC[k]||[]}
+function setCards(k,v){const s=ls();if(!s.cards)s.cards={};s.cards[k]=v;ss(s)}
 
-function getCards(key) {
-  const s = loadState();
-  return (s.cards && s.cards[key]) ? s.cards[key] : (DEFAULT_CARDS[key] || []);
-}
-function setCards(key, cards) {
-  const s = loadState();
-  if (!s.cards) s.cards = {};
-  s.cards[key] = cards;
-  saveState(s);
-}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
-// ── Sidebar ───────────────────────────────────────────────────────────────────
-function buildSidebar() {
-  const nav = document.getElementById('chapterNav');
-  nav.innerHTML = '<div class="sidebar-label">Kapitel</div>' +
-    CHAPTERS.map(c => `
-      <button class="sidebar-btn ${c.id === currentChapter && area==='kurs' ? 'active' : ''}"
-        id="sb-${c.id}" onclick="showChapter('${c.id}')">
-        <span class="num">${c.num}</span>
-        <span style="flex:1;text-align:left;font-size:12px;">${c.title}</span>
-      </button>`).join('');
-}
-
-// ── Chapter ───────────────────────────────────────────────────────────────────
-function showChapter(id) {
-  currentChapter = id;
-  area = 'kurs';
-  document.getElementById('kursView').style.display = '';
-  document.getElementById('adobeView').style.display = 'none';
-  document.getElementById('areaKurs').classList.add('active');
-  document.getElementById('areaAdobe').classList.remove('active');
-  clearSearch();
-  renderChapter();
-  buildSidebar();
-}
-
-function renderChapter() {
-  const c = CHAPTERS.find(x => x.id === currentChapter);
-  const cards = getCards(c.id);
-  document.getElementById('chapterTitle').textContent = `${c.num}. ${c.title}`;
-  document.getElementById('chapterSub').textContent = cards.length + ' Karten';
-  document.getElementById('kursCards').innerHTML = cards.length
-    ? cards.map(card => cardHTML(card, c.id)).join('')
-    : emptyHTML();
-}
-
-// ── Adobe ─────────────────────────────────────────────────────────────────────
-function switchArea(a, btn) {
-  area = a;
-  document.querySelectorAll('.sidebar-btn[id^="area"]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('kursView').style.display = a === 'kurs' ? '' : 'none';
-  document.getElementById('adobeView').style.display = a === 'adobe' ? '' : 'none';
-  clearSearch();
-  if (a === 'adobe') renderAdobe();
-  else renderChapter();
-  buildSidebar();
-}
-
-function switchAdobe(prog, btn) {
-  currentAdobe = prog;
-  document.querySelectorAll('.adobe-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAdobe();
-}
-
-function renderAdobe() {
-  const cards = getCards(currentAdobe);
-  const label = ADOBE_PROGRAMS[currentAdobe];
-  document.getElementById('adobeTitle').textContent = label;
-  document.getElementById('adobeSub').textContent = cards.length + ' Karten';
-  document.getElementById('adobeCards').innerHTML = cards.length
-    ? cards.map(card => cardHTML(card, currentAdobe)).join('')
-    : emptyHTML();
-}
-
-// ── Card HTML ─────────────────────────────────────────────────────────────────
-function cardHTML(card, key) {
-  const isChapter = key.startsWith('c');
-  const tagClass = isChapter ? `tag-${key.slice(1)}` : `tag-${key}`;
-  const tagLabel = isChapter
-    ? (CHAPTERS.find(c => c.id === key)?.num || '')
-    : ADOBE_PROGRAMS[key] || key;
-
-  const imgs = card.imgs && card.imgs.length
-    ? `<div class="card-imgs">${card.imgs.map(u => `<img src="${esc(u)}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('')}</div>`
-    : (card.img ? `<div class="card-imgs"><img src="${esc(card.img)}" alt="" loading="lazy" onerror="this.style.display='none'"></div>` : '');
-
-  return `<div class="card" id="card-${card.id}">
-    <span class="card-tag ${tagClass}">${tagLabel}</span>
-    <div class="card-icon"><i class="ti ${card.icon || 'ti-file'}"></i></div>
-    <div class="card-title">${esc(card.title)}</div>
+function cardHTML(card, key){
+  const tc = TAG[key]||'t01';
+  const tl = TAGLABEL(key);
+  const imgs = (card.imgs&&card.imgs.length?card.imgs:card.img?[card.img]:[]).filter(Boolean);
+  return `<div class="card" id="cd-${card.id}">
+    <span class="card-tag ${tc}">${esc(tl)}</span>
+    <div class="card-title"><i class="ti ${card.icon||'ti-file'}" aria-hidden="true" style="font-size:14px;margin-right:5px;opacity:.6"></i>${esc(card.title)}</div>
     <div class="card-desc">${esc(card.desc)}</div>
-    ${imgs}
-    <div class="card-footer">
-      <button class="card-del" onclick="deleteCard('${key}','${card.id}')"><i class="ti ti-trash"></i> Löschen</button>
+    ${imgs.length?`<div class="card-imgs">${imgs.map(u=>`<img src="${esc(u)}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('')}</div>`:''}
+    <div class="card-foot"><button class="del-btn" onclick="delCard('${key}','${card.id}')"><i class="ti ti-trash" aria-hidden="true"></i> Löschen</button></div>
+  </div>`;
+}
+
+function chapterAccordion(c, cards, key){
+  const isOpen = openChapters.has(key);
+  return `<div class="chapter${isOpen?' open':''}" id="ch-${key}">
+    <div class="chapter-head" onclick="toggleChapter('${key}')">
+      <span class="chapter-num">${esc(c.n||c)}</span>
+      <span class="chapter-name">${esc(c.t||c)}</span>
+      <span class="chapter-count">${cards.length} Karten</span>
+      <i class="ti ti-chevron-down chapter-chevron" aria-hidden="true"></i>
+    </div>
+    <div class="chapter-body">
+      <div class="cards" id="cards-${key}">${cards.map(cd=>cardHTML(cd,key)).join('')||'<div class="empty"><i class="ti ti-cards"></i>Noch keine Karten</div>'}</div>
+      <button class="add-btn" onclick="openModal('${key}')"><i class="ti ti-plus" aria-hidden="true"></i> Karte hinzufügen</button>
     </div>
   </div>`;
 }
 
-function emptyHTML() {
-  return '<div class="empty" style="grid-column:1/-1"><i class="ti ti-cards"></i>Noch keine Karten – füge die erste hinzu!</div>';
+function toggleChapter(key){
+  if(openChapters.has(key))openChapters.delete(key);else openChapters.add(key);
+  const el=document.getElementById('ch-'+key);
+  if(el)el.classList.toggle('open',openChapters.has(key));
 }
 
-function deleteCard(key, id) {
-  if (!confirm('Karte wirklich löschen?')) return;
-  setCards(key, getCards(key).filter(c => c.id !== id));
-  if (key.startsWith('c')) renderChapter(); else renderAdobe();
+function renderKurs(){
+  document.getElementById('kursView').innerHTML =
+    CH.map(c=>chapterAccordion(c,getCards(c.id),c.id)).join('');
 }
 
-// ── Modal ─────────────────────────────────────────────────────────────────────
-function openModal(context) {
-  modalContext = context;
-  document.getElementById('fTitle').value = '';
-  document.getElementById('fDesc').value = '';
-  document.getElementById('fIcon').value = 'ti-file';
-  document.getElementById('fImgs').value = '';
-  const cpg = document.getElementById('chapterPickGroup');
-  if (context === 'kurs') {
-    cpg.style.display = '';
-    document.getElementById('fChapter').innerHTML = CHAPTERS.map(c =>
-      `<option value="${c.id}" ${c.id===currentChapter?'selected':''}>${c.num} – ${c.title}</option>`).join('');
-    document.getElementById('modalTitle').textContent = 'Neue Karte – Kurskapitel';
+function renderAdobe(){
+  const key=curAdobe;
+  const cards=getCards(key);
+  const prog={n:'',t:AP[key]};
+  document.getElementById('adobeChapters').innerHTML =
+    chapterAccordion(prog,cards,key);
+  if(!openChapters.has(key)){openChapters.add(key);document.getElementById('ch-'+key)?.classList.add('open')}
+}
+
+function switchArea(a,btn){
+  curArea=a;
+  document.querySelectorAll('.area-switch button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('kursView').style.display = a==='kurs'?'':'none';
+  document.getElementById('adobeView').style.display = a==='adobe'?'':'none';
+  clearSearch();
+  if(a==='adobe')renderAdobe();
+}
+
+function switchAdobe(p,btn){
+  curAdobe=p;
+  document.querySelectorAll('.adobe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAdobe();
+}
+
+function delCard(key,id){
+  if(!confirm('Karte löschen?'))return;
+  setCards(key,getCards(key).filter(c=>c.id!==id));
+  reRender(key);
+}
+
+function reRender(key){
+  if(key.startsWith('c')){
+    const c=CH.find(x=>x.id===key);
+    const cards=getCards(key);
+    const g=document.getElementById('cards-'+key);
+    const cnt=document.querySelector(`#ch-${key} .chapter-count`);
+    if(g)g.innerHTML=cards.map(cd=>cardHTML(cd,key)).join('')||'<div class="empty"><i class="ti ti-cards"></i>Noch keine Karten</div>';
+    if(cnt)cnt.textContent=cards.length+' Karten';
   } else {
-    cpg.style.display = 'none';
-    document.getElementById('modalTitle').textContent = `Neue Karte – Adobe ${ADOBE_PROGRAMS[currentAdobe]}`;
+    renderAdobe();
   }
-  document.getElementById('modalBackdrop').classList.add('open');
-  setTimeout(() => document.getElementById('fTitle').focus(), 50);
 }
 
-function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); }
-function closeModalOutside(e) { if (e.target === document.getElementById('modalBackdrop')) closeModal(); }
-
-function saveCard() {
-  const title = document.getElementById('fTitle').value.trim();
-  const desc = document.getElementById('fDesc').value.trim();
-  if (!title || !desc) { alert('Bitte Titel und Beschreibung ausfüllen.'); return; }
-  const icon = document.getElementById('fIcon').value.trim() || 'ti-file';
-  const imgs = document.getElementById('fImgs').value.split('\n').map(s=>s.trim()).filter(Boolean);
-  const key = modalContext === 'kurs' ? document.getElementById('fChapter').value : currentAdobe;
-  const card = { id: 'u' + Date.now(), icon, title, desc, imgs };
-  setCards(key, [...getCards(key), card]);
+// Modal
+let mKey='c01';
+function openModal(key){
+  mKey=key;
+  mCtx=key.startsWith('c')?'kurs':'adobe';
+  document.getElementById('fT').value='';
+  document.getElementById('fD').value='';
+  document.getElementById('fI').value='ti-file';
+  document.getElementById('fU').value='';
+  const fcg=document.getElementById('fCG');
+  if(mCtx==='kurs'){
+    fcg.style.display='';
+    document.getElementById('fC').innerHTML=CH.map(c=>`<option value="${c.id}" ${c.id===key?'selected':''}>${c.n} – ${c.t}</option>`).join('');
+    document.getElementById('mTitle').textContent='Neue Karte – Kurskapitel';
+  } else {
+    fcg.style.display='none';
+    document.getElementById('mTitle').textContent=`Neue Karte – Adobe ${AP[key]}`;
+  }
+  document.getElementById('backdrop').classList.add('open');
+  setTimeout(()=>document.getElementById('fT').focus(),50);
+}
+function closeModal(){document.getElementById('backdrop').classList.remove('open')}
+function closeOut(e){if(e.target===document.getElementById('backdrop'))closeModal()}
+function saveCard(){
+  const t=document.getElementById('fT').value.trim();
+  const d=document.getElementById('fD').value.trim();
+  if(!t||!d){alert('Bitte Titel und Beschreibung ausfüllen.');return}
+  const icon=document.getElementById('fI').value.trim()||'ti-file';
+  const imgs=document.getElementById('fU').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const key=mCtx==='kurs'?document.getElementById('fC').value:curAdobe;
+  setCards(key,[...getCards(key),{id:'u'+Date.now(),icon,title:t,desc:d,imgs}]);
   closeModal();
-  if (modalContext === 'kurs') { currentChapter = key; renderChapter(); buildSidebar(); }
-  else renderAdobe();
+  if(!openChapters.has(key))openChapters.add(key);
+  reRender(key);
 }
 
-// ── Search ────────────────────────────────────────────────────────────────────
-function allCards() {
-  const out = [];
-  CHAPTERS.forEach(c => getCards(c.id).forEach(card => out.push({ card, key: c.id })));
-  Object.keys(ADOBE_PROGRAMS).forEach(k => getCards(k).forEach(card => out.push({ card, key: k })));
-  return out;
-}
-
-function doSearch(q) {
-  const sv = document.getElementById('searchView');
-  if (!q.trim()) { sv.style.display = 'none'; return; }
-  sv.style.display = '';
-  const results = allCards().filter(({card}) =>
-    (card.title + card.desc).toLowerCase().includes(q.toLowerCase())
-  );
-  document.getElementById('searchLabel').textContent =
-    `${results.length} Ergebnis${results.length!==1?'se':''} für „${q}"`;
-  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
-  const hi = t => esc(t).replace(re, '<span class="highlight">$1</span>');
-  const sc = document.getElementById('searchCards');
-  if (!results.length) {
-    sc.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="ti ti-search-off"></i>Nichts gefunden.</div>';
-  } else {
-    sc.innerHTML = results.map(({card, key}) => {
-      const isChapter = key.startsWith('c');
-      const tagClass = isChapter ? `tag-${key.slice(1)}` : `tag-${key}`;
-      const tagLabel = isChapter ? (CHAPTERS.find(c=>c.id===key)?.num||'') : ADOBE_PROGRAMS[key];
-      const imgs = card.imgs && card.imgs.length
-        ? `<div class="card-imgs">${card.imgs.map(u=>`<img src="${esc(u)}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('')}</div>`
-        : '';
+// Search
+function doSearch(q){
+  const sv=document.getElementById('searchView');
+  const mv=document.getElementById('mainView');
+  if(!q.trim()){sv.style.display='none';mv.style.display='';return}
+  sv.style.display='';mv.style.display='none';
+  const all=[];
+  CH.forEach(c=>getCards(c.id).forEach(cd=>all.push({cd,key:c.id})));
+  Object.keys(AP).forEach(k=>getCards(k).forEach(cd=>all.push({cd,key:k})));
+  const res=all.filter(({cd})=>(cd.title+cd.desc).toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('searchLabel').textContent=`${res.length} Ergebnis${res.length!==1?'se':''} für „${q}"`;
+  const re=new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+  const hi=t=>esc(t).replace(re,'<span class="highlight">$1</span>');
+  document.getElementById('searchCards').innerHTML=res.length
+    ?res.map(({cd,key})=>{
+      const tc=TAG[key]||'t01';const tl=TAGLABEL(key);
+      const imgs=(cd.imgs&&cd.imgs.length?cd.imgs:cd.img?[cd.img]:[]).filter(Boolean);
       return `<div class="card">
-        <span class="card-tag ${tagClass}">${tagLabel}</span>
-        <div class="card-icon"><i class="ti ${card.icon||'ti-file'}"></i></div>
-        <div class="card-title">${hi(card.title)}</div>
-        <div class="card-desc">${hi(card.desc)}</div>
-        ${imgs}
+        <span class="card-tag ${tc}">${esc(tl)}</span>
+        <div class="card-title"><i class="ti ${cd.icon||'ti-file'}" aria-hidden="true" style="font-size:14px;margin-right:5px;opacity:.6"></i>${hi(cd.title)}</div>
+        <div class="card-desc">${hi(cd.desc)}</div>
+        ${imgs.length?`<div class="card-imgs">${imgs.map(u=>`<img src="${esc(u)}" alt="" loading="lazy" onerror="this.style.display='none'">`).join('')}</div>`:''}
       </div>`;
-    }).join('');
-  }
+    }).join('')
+    :'<div class="empty"><i class="ti ti-search-off"></i>Nichts gefunden.</div>';
+}
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchView').style.display='none';
+  document.getElementById('mainView').style.display='';
 }
 
-function clearSearch() {
-  document.getElementById('searchInput').value = '';
-  document.getElementById('searchView').style.display = 'none';
-}
-
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── Init ──────────────────────────────────────────────────────────────────────
-buildSidebar();
-renderChapter();
+// Init
+renderKurs();
 </script>
 </body>
 </html>
 HTMLEOF
 echo "done"
-
-
