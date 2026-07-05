@@ -53,6 +53,12 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .card-tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 7px;border-radius:99px;margin-bottom:7px}
 .card-title{font-size:13px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:5px}
 .card-desc{font-size:12px;color:var(--muted);line-height:1.65;white-space:pre-line}
+.card-desc strong{font-weight:700;color:var(--text)}
+.card-desc em{font-style:italic}
+.card-desc u{text-decoration:underline}
+.card-desc s{text-decoration:line-through;opacity:.6}
+.card-desc .hl-blue{background:#ede9fe;color:#5b21b6;border-radius:3px;padding:0 3px;font-weight:500}
+.card-desc .hl-mint{background:#fce7f3;color:#9d174d;border-radius:3px;padding:0 3px}
 
 /* image blocks within card */
 .card-img-block{border-top:1px solid var(--border);padding:10px 14px}
@@ -160,7 +166,15 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
   <div class="modal">
     <div class="modal-title" id="mTitle">Karte</div>
     <div class="fg"><label class="fl">Titel *</label><input class="fi" type="text" id="fT" placeholder="z. B. Komplementärfarben"></div>
-    <div class="fg"><label class="fl">Beschreibung *</label><textarea class="ft" id="fD" rows="5" placeholder="Ausführliche Beschreibung …&#10;Zeilenumbrüche werden übernommen."></textarea></div>
+    <div class="fg">
+      <label class="fl">Beschreibung *</label>
+      <textarea class="ft" id="fD" rows="5" placeholder="Ausführliche Beschreibung …&#10;Zeilenumbrüche werden übernommen."></textarea>
+      <div class="fh" style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px">
+        <span style="background:#ede9fe;color:#5b21b6;padding:1px 6px;border-radius:3px;font-size:11px">!!wichtig!!</span>
+        <span style="background:#fce7f3;color:#9d174d;padding:1px 6px;border-radius:3px;font-size:11px">==markiert==</span>
+        <span style="font-size:11px;color:var(--faint)"><strong style="color:var(--text)">**fett**</strong> &nbsp; <em>*kursiv*</em> &nbsp; <u>__unterstr.__</u> &nbsp; <s>~~durch~~</s></span>
+      </div>
+    </div>
     <div class="fg"><label class="fl">Icon (Tabler-Name)</label><input class="fi" type="text" id="fI" placeholder="ti-palette" value="ti-file"><div class="fh">Optional – Liste: <a href="https://tabler.io/icons" target="_blank" style="color:var(--accent)">tabler.io/icons</a></div></div>
     <div class="fg">
       <label class="fl">Bilder (URL + optionale Bildunterschrift)</label>
@@ -220,7 +234,14 @@ const DC={
     {id:'d04b',icon:'ti-line-height',title:'Mikrotypografie',desc:'Kerning = Abstand zwischen zwei Zeichen\nTracking = globaler Zeichenabstand\nLeading = Zeilenabstand (optimal: 120–145 % der Schriftgröße)',imgs:[]},
   ],
   c05:[{id:'d05a',icon:'ti-icons',title:'Icon-Systeme',desc:'Konsistente Sets: gleiche Strichstärke, gleicher Stil, gleiches Raster.',imgs:[]},{id:'d05b',icon:'ti-vector',title:'Piktogrammgestaltung',desc:'Reduktion auf das Wesentliche.',imgs:[]}],
-  c06:[{id:'d06a',icon:'ti-layout-columns',title:'Rastersysteme',desc:'Spalten-, Modul- und Grundlinienraster für konsistente Layouts.',imgs:[]},{id:'d06b',icon:'ti-file-text',title:'Editorial Design',desc:'Satzspiegelkonstruktion und Leseführung in Magazinen und Büchern.',imgs:[]}],
+  c06:[
+    {id:'d06a',icon:'ti-layout-grid',title:'Layout – Grundlagen',desc:'**Layout** = optische Anordnung der verschiedenen grafischen Elemente auf einer bestimmten Fläche\n\nLayout = Organisieren & Konkretisieren von visuellen Informationen auf einer zweidimensionalen Fläche.\n\nJedes Layout basiert auf durchdachtem Raster → liefert durchgehende Struktur.\n!!Gutes Layout führt den Leser ohne dass es anstrengend wird!!\n\nAlle visuellen Komponenten (Bilder, Texte & Grafiken) müssen zueinanderpassen & ein stimmiges Gesamtbild formen → nicht nur Anordnen, sondern visuelle Kommunikation in reinster Form\n\n**W-Fragen zum Layout-Aufbau:**\nWER / WAS / WANN / WO & WOMIT / WARUM / WIE / WOZU\n→ Immer auch während des Projekts kontrollierend stellen!',imgs:[]},
+    {id:'d06b',icon:'ti-file-description',title:'Format & Papier',desc:'**Format** = Verhältnis von Breite zu Höhe einer Fläche\n!!Format muss vor Layout geklärt sein!!\nErst durch Format können Grafiken, Texte und Bilder angeordnet werden\n\n3 Kategorien: Hochformat | Querformat | Quadratisches Format\nAngabe: Breite × Höhe, z. B. 210 × 297 mm / Hochformat\n\n**DIN-Formate:**\n– A0 = 841×1189 mm = 1 Quadratmeter\n– Alle DIN-Formate: Seitenverhältnis √2\n– Jedes kleinere Format = halbe längere Seite des vorherigen\n– Vergrößerungsfaktor zum nächsten Format: ==141%== | 2 Schritte: 200%\n– Verkleinerungsfaktor: ==71%== | 2 Schritte: 50%\n– DIN-A: Standard | DIN-B: Umschläge, Ordner | DIN-C: Briefumschläge\n\n**Papiergewicht (Grammatur) in g/m²:**\nDünndruckpapier ~40 | Zeitung ~50 | Plakat ~60 | Kunstdruck 90–135\nBriefbogen 80–110 | Postkarte 170 | Broschüre Umschlag 180–400 | Innenseiten 115–170\n\n**Papiersorten:**\nGestrichen = glatt, beschichtet, Farbe besser\nUngestrichen = weicher, Farbe wird stärker aufgesaugt\n\n!!Papier trägt Gestaltung im Wesentlichen – Wahl des Papiers ist entscheidend!!',imgs:[]},
+    {id:'d06c',icon:'ti-layout-navbar',title:'Satzspiegel',desc:'**Satzspiegel** = bedruckter Bereich der Grundfläche\n→ legt gleichzeitig Leerraum (Weißraum) fest\n→ garantiert visuelle Einheitlichkeit wenn durchgezogen\n\n!!Grundregel: Vom Groben ins Feine!!\n\nAußerhalb des Satzspiegels: Marginalien, Kolumnentitel, Pagina\n\n**Randproportionen:**\nInnerer Rand (Bundsteg) = schmaler als äußerer Rand\nUnterer Rand (Fußsteg) = größer als oberer Rand (Kopfsteg)\n→ sorgt für ausgewogene Position des Inhalts\n\n**Methoden zur Satzspiegel-Konstruktion:**\n– Freier Satzspiegel: Diagonalkonstruktion (einfachste Methode)\n– Zahlenreihe 2:3:4:5 (harmonisch, gut für DIN-Formate)\n– Goldener Schnitt: 2:3:5:8 (viel Weißraum, klassisch)\n– Fester Satzspiegel: Neunerteilung oder ==Zwölferteilung== (häufig bei Broschüren)\n\n**Pagina** = Seitenzahl, steht zu 99% unterhalb des Satzspiegels\nBei Doppelseite: links = gerade Zahlen | Vorderseite = immer ungerade\n\n**Kolumnentitel**: über dem Text, zusätzliche Orientierung\n– Lebend = ändert sich (Kapitel) | Tot = bleibt gleich (wie Pagina)\n\n**Marginalien** = Kommentare/Hinweise außerhalb des Satzspiegels\nLinks = rechtsbündig | Rechts = linksbündig',imgs:[]},
+    {id:'d06d',icon:'ti-layout-columns',title:'Gestaltungsraster',desc:'**Gestaltungsraster** = konsequente Erweiterung des Satzspiegels\n→ teilt ihn in weitere visuelle Einheiten\n\n!!Fehlendes Raster ≠ Kreativität – es erzeugt Orientierungslosigkeit und wirkt chaotisch!!\n\nRaster sorgt für: Komposition, Proportion, Ordnung, Kontinuität und visuelle Sicherheit\n→ erweitert visuelle Möglichkeiten, anstatt sie einzuschränken\n\n**Rasterarten:**\n– **Einspaltiges Raster**: Bücher, Aufsätze – Lesbarkeit im Vordergrund\n– **Zweispaltiges Raster**: Textmengen strukturieren\n  – symmetrisch = Ruhe | asymmetrisch = Spannung\n– **Mehrspaltige Raster**: Magazine, Broschüren, Websites\n  – unbegrenzte Kombinationsmöglichkeiten\n– **Modulraster**: Fläche in gleich große Module aufteilen\n  – Zeitungen, Websites, Tabellen\n– **Grundlinienraster**: exakte horizontale Ausrichtung des Fließtextes\n  – Text auf Vorder- und Rückseite deckungsgleich\n  – bei dünnem Papier (Zeitung) besonders wichtig\n\n==Raster braucht Luft zum Atmen – Weißraum ist kein verschwendeter Platz!==\n\n**Checkliste Gestaltungsraster:**\n1. Format festlegen\n2. Satzspiegel & Ränder definieren\n3. Paginierung & Kolumnentitel setzen\n4. Spalten und Raster festlegen\n5. Bilder & Texte platzieren\n6. Schriftwahl, Schriftgröße, Zeilenabstand\n7. Farbe einsetzen\n8. Grafische Elemente hinzufügen',imgs:[]},
+    {id:'d06e',icon:'ti-photo',title:'Layout in der Praxis',desc:'**Gestaltungsphasen:**\n1. Entwurf – analog, visuelle Scribbles auf Papier, 20 schnelle Ideen\n2. Rohlayout (Groblayout) – am Computer, mit Blindtext & Proportionen\n3. Reinlayout – finale Bilder, Mikrotypografie, Rechtschreibung\n4. Prototyp – reales Muster in Originalgröße zum Testen\n\n!!Briefing mit Kunden steht immer zuerst!!\n\n**Text & Bildverhältnis:**\nViel Text → Intellekt wird angesprochen\nViele Bilder → Emotion wird angesprochen\n50/50 = ausgewogenes ruhiges Tempo | 70/30 Bild/Text = mehr Dynamik\n\n**Layout-Stile:**\n– Symmetrie: traditionell, seriös, ruhig, harmonisch\n– Asymmetrie: modern, gewagter, aus Bauhaus-Bewegung (1920er)\n\n**Druckverfahren:**\n– ==Offsetdruck== = wichtigstes Verfahren, hohe Auflagen, CMYK + Sonderfarben\n– Digitaldruck = günstigste Form, Kleinstauflagen, kein Sonderfarben\n– Siebdruck = T-Shirts, Metall, Glas, Volltonfarben möglich\n– Flexodruck = Verpackungen, Massenwaren\n– Tiefdruck = Kataloge, Zeitschriften, sehr hohe Auflagen\n\n**Beschnitt** = Papierrand über Endmaß hinaus\n→ Sicherheit für vollflächige Seiten ohne weißen Rand\n→ Regel: ==mind. 3 mm Beschnitt anlegen==\n\n**PDF-Export:**\nSchriften in Pfade konvertieren! Pfad-Version separat speichern!\nFormat: PDF/X-3 oder PDF/X-1a (ISO-Norm)',imgs:[]},
+    {id:'d06f',icon:'ti-news',title:'Editorial Design & Magazin',desc:'**Editorial Design** = Magazindesign\nAnspruchsvolle Aufgabe: Titellogo, Cover, Raster, Schriftwahl, Bildsprache und Detailtypografie müssen zueinander passen\n\n**Magazin-Aufbau:**\n1. Eingangsteil: Editorial, Inhaltsverzeichnis, News, Rubriken\n2. Hauptteil: Leitartikel, Features, Interviews\n3. Schlussteil: Rezensionen, Serviceseiten, Vorschau\n\n**Umschlagseiten:**\nU1 = Cover | U2 = innere Umschlagseite (Seite 2)\nU3 = letzte rechte Umschlagseite | U4 = Rückseite\nU2, U3, U4 = teuerste Anzeigenplätze\n\n**Magazin Cover – 3 Kategorien:**\n– Fotografisches Cover (am häufigsten)\n– Illustratives/abstraktes Cover\n– Typografisches Cover\n\n!!Cover = Gesicht des Magazins – erster Eindruck, Wiedererkennungswert, Zielgruppenansprache!!\n\n**Titelzeilen** (Teaser/Anreißer): links positioniert, beste Sichtbarkeit im Handel\n**Titellogo** = Markenkern, immer gleich, links oben\n\n**Text-Elemente im Magazin:**\n– Headline: größtes typografisches Element, Blickfang\n– Lead (Vorspann): führt zum Fließtext hin\n– Zwischenüberschriften: visuelle Pausen, bessere Orientierung\n– Zitate: meist kursiv, visuelle Auflockerung\n– Kästen & Rahmen: Ordnung & Orientierung, kein Dekor!\n\n**Plakatgestaltung:**\nWird in 2 Schritten wahrgenommen:\n1. Aus Distanz: Blickfang, Reflex des Interesses\n2. Näher: Detailinfos, Kontakthinweise\n==Plakat muss auffällig UND trotzdem lesbar sein!==\n3 Kategorien: Kommerziell | Propaganda | Kunst/Kultur',imgs:[]},
+  ],
   c07:[{id:'d07a',icon:'ti-circle',title:'Logoformen',desc:'Wortmarke, Bildmarke, Kombinations-, Buchstaben- und Emblemmarke.',imgs:[]},{id:'d07b',icon:'ti-rulers',title:'Schutzzone & Skalierung',desc:'Mindestgröße, Schutzzone, SW-Version definieren.\nVektoren (SVG, AI, EPS) für verlustfreie Skalierung.',imgs:[]}],
   c08:[{id:'d08a',icon:'ti-file-description',title:'Brand Guidelines',desc:'Farbe, Schrift, Bildsprache, Ton – konsistentes Markenbild.',imgs:[]},{id:'d08b',icon:'ti-building',title:'CD vs. CI',desc:'CD = sichtbares Erscheinungsbild\nCI = Haltung, Werte, Unternehmenskultur',imgs:[]}],
   c09:[{id:'d09a',icon:'ti-speakerphone',title:'Werbemittel',desc:'Print vs. Digital – Formate, Auflösungen je Medium.',imgs:[]},{id:'d09b',icon:'ti-target',title:'Zielgruppenanalyse',desc:'Gestaltung auf Alter, Kontext und Kultur abstimmen.',imgs:[]}],
@@ -260,6 +281,17 @@ function getCards(k){const s=ls();return s.cards&&s.cards[k]?s.cards[k]:(DC[k]||
 function setCards(k,v){const s=ls();if(!s.cards)s.cards={};s.cards[k]=v;ss(s)}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
+// Mini-Markdown renderer für Kartenbeschreibungen
+function fmt(s){
+  return esc(s)
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/==(.+?)==/g,'<span class="hl-mint">$1</span>')
+    .replace(/!!(.+?)!!/g,'<span class="hl-blue">$1</span>')
+    .replace(/__(.+?)__/g,'<u>$1</u>')
+    .replace(/~~(.+?)~~/g,'<s>$1</s>');
+}
+
 function cardHTML(card,key){
   const tc=TAG[key]||'t01', tl=TL(key)||'';
   const imgs=Array.isArray(card.imgs)?card.imgs:[];
@@ -272,7 +304,7 @@ function cardHTML(card,key){
     <div class="card-main">
       <span class="card-tag ${tc}">${esc(tl)}</span>
       <div class="card-title"><i class="ti ${card.icon||'ti-file'}" aria-hidden="true" style="font-size:14px;opacity:.55"></i>${esc(card.title)}</div>
-      <div class="card-desc">${esc(card.desc)}</div>
+      <div class="card-desc">${fmt(card.desc)}</div>
     </div>
     ${imgBlocks}
     <div class="card-foot">
@@ -448,7 +480,7 @@ function doSearch(q){
       const tc=TAG[key]||'t01',tl=TL(key)||'';
       const imgs=Array.isArray(cd.imgs)?cd.imgs:[];
       const imgB=imgs.filter(i=>i&&i.url).map(i=>`<div class="card-img-block"><img src="${esc(i.url)}" alt="${esc(i.caption||'')}" loading="lazy" onerror="this.parentElement.style.display='none'">${i.caption?`<div class="card-img-caption">${esc(i.caption)}</div>`:''}</div>`).join('');
-      return `<div class="card"><div class="card-main"><span class="card-tag ${tc}">${esc(tl)}</span><div class="card-title"><i class="ti ${cd.icon||'ti-file'}" aria-hidden="true" style="font-size:14px;opacity:.55"></i>${hi(cd.title)}</div><div class="card-desc">${hi(cd.desc)}</div></div>${imgB}</div>`;
+      return `<div class="card"><div class="card-main"><span class="card-tag ${tc}">${esc(tl)}</span><div class="card-title"><i class="ti ${cd.icon||'ti-file'}" aria-hidden="true" style="font-size:14px;opacity:.55"></i>${hi(cd.title)}</div><div class="card-desc">${fmt(cd.desc)}</div></div>${imgB}</div>`;
     }).join('')
     :'<div class="empty"><i class="ti ti-search-off"></i>Nichts gefunden.</div>';
 }
