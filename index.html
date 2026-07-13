@@ -33,17 +33,21 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .area-switch button.active{background:var(--accent-bg);color:var(--accent)}
 .area-switch button+button{border-left:1px solid var(--border)}
 
-/* accordion */
+/* chapter list rows */
 .chapter{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;overflow:hidden}
 .chapter-head{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .12s}
 .chapter-head:hover{background:var(--bg)}
 .chapter-num{font-size:11px;font-weight:700;color:var(--faint);min-width:22px}
 .chapter-name{flex:1;font-size:14px;font-weight:500;color:var(--text)}
 .chapter-count{font-size:11px;color:var(--faint)}
-.chevron{font-size:16px;color:var(--faint);transition:transform .2s}
-.chapter.open .chevron{transform:rotate(180deg)}
-.chapter-body{display:none;border-top:1px solid var(--border);padding:12px}
-.chapter.open .chapter-body{display:block}
+.chevron{font-size:16px;color:var(--faint)}
+
+/* chapter detail page */
+.detail-head{display:flex;align-items:center;gap:12px;margin-bottom:1.2rem}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);font-size:12px;cursor:pointer;color:var(--muted);font-family:inherit;transition:all .12s;flex-shrink:0}
+.back-btn:hover{border-color:var(--border-h);color:var(--text)}
+.detail-title{flex:1;font-size:16px;font-weight:600;color:var(--text)}
+.detail-count{font-size:11px;color:var(--faint);flex-shrink:0}
 
 /* cards */
 .cards{display:flex;flex-direction:column;gap:8px}
@@ -72,14 +76,6 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 
 .add-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px dashed var(--border);border-radius:var(--rs);background:none;font-size:12px;cursor:pointer;color:var(--faint);font-family:inherit;margin-top:8px;transition:all .15s;width:100%;justify-content:center}
 .add-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
-
-/* adobe */
-.adobe-tabs{display:flex;gap:6px;margin-bottom:1rem}
-.adobe-tab{flex:1;padding:9px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit;transition:all .12s}
-.adobe-tab:hover{border-color:var(--border-h)}
-.adobe-tab.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
-.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-.dot-ps{background:#31A8FF}.dot-ai{background:#FF9A00}.dot-id{background:#FF3366}
 
 /* search */
 #searchView{display:none}
@@ -133,16 +129,15 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 @media print{
   @page{margin:14mm}
   body{background:#fff;color:#000;font-size:11px;line-height:1.45}
-  header,.search-wrap,.area-switch,.adobe-tabs,.card-foot,.add-btn,.chevron,.backdrop{display:none!important}
-  header .print-btn{display:none!important}
+  header,.search-wrap,.area-switch,.card-foot,.add-btn,.chevron,.back-btn,.backdrop{display:none!important}
   #searchView{display:none!important}
   #mainView{display:block!important}
-  #kursView,#adobeView{display:block!important}
   .page{max-width:none;padding:0;margin:0}
   .chapter{border:none;border-bottom:1px solid #ccc;border-radius:0;margin-bottom:0;break-inside:avoid-page;page-break-inside:avoid}
-  .chapter-head{padding:8px 0;cursor:default}
-  .chapter-name{font-size:13px;font-weight:700}
-  .chapter-body{display:block!important;padding:4px 0 10px;border-top:none}
+  .chapter-head{padding:6px 0;cursor:default}
+  .chapter-name{font-size:12px;font-weight:700}
+  .detail-head{border-bottom:2px solid #000;padding-bottom:8px;margin-bottom:14px}
+  .detail-title{font-size:16px;font-weight:800}
   .cards{gap:6px}
   .card{background:#fff;border:1px solid #ccc;border-radius:0;break-inside:avoid;page-break-inside:avoid}
   .card-main{padding:8px 10px}
@@ -177,19 +172,15 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
   </div>
 
   <div id="mainView">
-    <div class="area-switch">
-      <button class="active" onclick="switchArea('kurs',this)"><i class="ti ti-book-2" aria-hidden="true"></i> Kurskapitel</button>
-      <button onclick="switchArea('adobe',this)"><i class="ti ti-apps" aria-hidden="true"></i> Adobe Tools</button>
-    </div>
-    <div id="kursView"></div>
-    <div id="adobeView" style="display:none">
-      <div class="adobe-tabs">
-        <button class="adobe-tab active" onclick="switchAdobe('ps',this)"><span class="dot dot-ps"></span>Photoshop</button>
-        <button class="adobe-tab" onclick="switchAdobe('ai',this)"><span class="dot dot-ai"></span>Illustrator</button>
-        <button class="adobe-tab" onclick="switchAdobe('id',this)"><span class="dot dot-id"></span>InDesign</button>
+    <div id="listWrap">
+      <div class="area-switch">
+        <button class="active" onclick="switchArea('kurs',this)"><i class="ti ti-book-2" aria-hidden="true"></i> Kurskapitel</button>
+        <button onclick="switchArea('adobe',this)"><i class="ti ti-apps" aria-hidden="true"></i> Adobe Tools</button>
       </div>
-      <div id="adobeChapters"></div>
+      <div id="kursView"></div>
+      <div id="adobeView" style="display:none"></div>
     </div>
+    <div id="detailView" style="display:none"></div>
   </div>
 </div>
 
@@ -366,8 +357,7 @@ const DC={
   ],
 };
 
-let curArea='kurs', curAdobe='ps', mCtx='kurs', editId=null, editKey=null;
-const openCh=new Set();
+let curArea='kurs', mCtx='kurs', editId=null, editKey=null, curDetail=null;
 
 function ls(){try{return JSON.parse(localStorage.getItem('gd4')||'{}')}catch{return{}}}
 function ss(s){localStorage.setItem('gd4',JSON.stringify(s))}
@@ -410,32 +400,63 @@ function cardHTML(card,key){
 
 function emptyHTML(){return'<div class="empty" style="grid-column:1/-1"><i class="ti ti-cards"></i>Noch keine Karten</div>'}
 
-function chAccordion(c,cards,key){
-  const isOpen=openCh.has(key);
-  return `<div class="chapter${isOpen?' open':''}" id="ch-${key}">
-    <div class="chapter-head" onclick="toggleCh('${key}')">
+// ── Kapitel-Liste (Übersicht) ────────────────────────────────────────────────
+function chapterRow(c,cards,key){
+  return `<div class="chapter" id="ch-${key}">
+    <div class="chapter-head" onclick="openChapter('${key}')">
       <span class="chapter-num">${esc(c.n||'')}</span>
       <span class="chapter-name">${esc(c.t||AP[key]||key)}</span>
       <span class="chapter-count" id="cnt-${key}">${cards.length} Karten</span>
-      <i class="ti ti-chevron-down chevron" aria-hidden="true"></i>
-    </div>
-    <div class="chapter-body">
-      <div class="cards" id="cards-${key}">${cards.map(cd=>cardHTML(cd,key)).join('')||emptyHTML()}</div>
-      <button class="add-btn" onclick="openAdd('${key}')"><i class="ti ti-plus" aria-hidden="true"></i> Karte hinzufügen</button>
+      <i class="ti ti-chevron-right chevron" aria-hidden="true"></i>
     </div>
   </div>`;
 }
 
-function toggleCh(key){
-  if(openCh.has(key))openCh.delete(key);else openCh.add(key);
-  document.getElementById('ch-'+key)?.classList.toggle('open',openCh.has(key));
+function renderKurs(){document.getElementById('kursView').innerHTML=CH.map(c=>chapterRow(c,getCards(c.id),c.id)).join('')}
+function renderAdobeList(){
+  document.getElementById('adobeView').innerHTML=Object.keys(AP).map(k=>chapterRow({n:'',t:AP[k]},getCards(k),k)).join('');
 }
 
-function renderKurs(){document.getElementById('kursView').innerHTML=CH.map(c=>chAccordion(c,getCards(c.id),c.id)).join('')}
-function renderAdobe(){
-  const key=curAdobe,cards=getCards(key);
-  document.getElementById('adobeChapters').innerHTML=chAccordion({n:'',t:AP[key]},cards,key);
-  if(!openCh.has(key)){openCh.add(key);document.getElementById('ch-'+key)?.classList.add('open')}
+// ── Kapitel-Detailseite ───────────────────────────────────────────────────────
+function renderDetail(){
+  const key=curDetail;
+  if(!key)return;
+  const c=CH.find(x=>x.id===key);
+  const title=c?`${c.n} – ${c.t}`:(AP[key]||key);
+  const cards=getCards(key);
+  document.getElementById('detailView').innerHTML=`
+    <div class="detail-head">
+      <button class="back-btn" onclick="closeChapter()"><i class="ti ti-arrow-left" aria-hidden="true"></i> Zurück</button>
+      <div class="detail-title">${esc(title)}</div>
+      <span class="detail-count">${cards.length} Karten</span>
+    </div>
+    <div class="cards" id="cards-${key}">${cards.map(cd=>cardHTML(cd,key)).join('')||emptyHTML()}</div>
+    <button class="add-btn" onclick="openAdd('${key}')"><i class="ti ti-plus" aria-hidden="true"></i> Karte hinzufügen</button>`;
+}
+
+function openChapter(key){
+  curDetail=key;
+  renderDetail();
+  document.getElementById('listWrap').style.display='none';
+  document.getElementById('detailView').style.display='';
+  window.scrollTo(0,0);
+}
+
+function closeChapter(){
+  const key=curDetail;
+  curDetail=null;
+  document.getElementById('detailView').style.display='none';
+  document.getElementById('listWrap').style.display='';
+  if(key){
+    const isKurs=key.startsWith('c');
+    curArea=isKurs?'kurs':'adobe';
+    document.querySelectorAll('.area-switch button').forEach((b,i)=>b.classList.toggle('active',(i===0)===isKurs));
+    document.getElementById('kursView').style.display=isKurs?'':'none';
+    document.getElementById('adobeView').style.display=isKurs?'none':'';
+  }
+  renderKurs();
+  renderAdobeList();
+  window.scrollTo(0,0);
 }
 
 function switchArea(a,btn){
@@ -445,13 +466,7 @@ function switchArea(a,btn){
   document.getElementById('kursView').style.display=a==='kurs'?'':'none';
   document.getElementById('adobeView').style.display=a==='adobe'?'':'none';
   clearSearch();
-  if(a==='adobe')renderAdobe();
-}
-function switchAdobe(p,btn){
-  curAdobe=p;
-  document.querySelectorAll('.adobe-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAdobe();
+  if(a==='adobe')renderAdobeList();
 }
 
 function reRender(key){
@@ -460,6 +475,8 @@ function reRender(key){
   const cnt=document.getElementById('cnt-'+key);
   if(g)g.innerHTML=cards.map(cd=>cardHTML(cd,key)).join('')||emptyHTML();
   if(cnt)cnt.textContent=cards.length+' Karten';
+  const dc=document.querySelector('#detailView .detail-count');
+  if(curDetail===key&&dc)dc.textContent=cards.length+' Karten';
 }
 function delCard(key,id){
   if(!confirm('Karte löschen?'))return;
@@ -538,7 +555,7 @@ function saveCard(){
   if(!title||!desc){alert('Bitte Titel und Beschreibung ausfüllen.');return}
   const icon=document.getElementById('fI').value.trim()||'ti-file';
   const imgs=getImgRows();
-  const key=mCtx==='kurs'?document.getElementById('fC').value:curAdobe;
+  const key=mCtx==='kurs'?document.getElementById('fC').value:editKey;
   if(editId){
     // update existing
     const cards=getCards(editKey).map(c=>c.id===editId?{...c,title,desc,icon,imgs}:c);
@@ -549,7 +566,6 @@ function saveCard(){
     const card={id:'u'+Date.now(),icon,title,desc,imgs};
     setCards(key,[...getCards(key),card]);
     closeModal();
-    if(!openCh.has(key))openCh.add(key);
     reRender(key);
   }
 }
