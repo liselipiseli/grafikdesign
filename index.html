@@ -68,6 +68,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .card-img-block{border-top:1px solid var(--border);padding:10px 14px}
 .card-img-block img{width:100%;border-radius:4px;display:block;border:1px solid var(--border)}
 .card-img-caption{font-size:11px;color:var(--faint);margin-top:4px}
+.card-img-block.inline{border-top:none;padding:6px 0;margin:2px 0}
 
 .card-foot{display:flex;gap:6px;justify-content:flex-end;padding:8px 14px;border-top:1px solid var(--border);background:var(--surface)}
 .foot-btn{padding:3px 9px;border:1px solid var(--border);border-radius:4px;background:none;font-size:11px;cursor:pointer;color:var(--faint);font-family:inherit;display:flex;align-items:center;gap:3px;transition:all .12s}
@@ -99,6 +100,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 /* image entry rows in modal */
 .img-entries{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
 .img-row{display:flex;gap:6px;align-items:flex-start}
+.img-num{flex-shrink:0;font-size:10px;font-weight:700;color:var(--faint);padding:9px 0 0}
 .img-row .fi{flex:1}
 .img-row .ft{flex:1;min-height:50px}
 .img-del{padding:7px 9px;border:1px solid var(--border);border-radius:var(--rs);background:none;cursor:pointer;color:var(--faint);font-size:13px;flex-shrink:0;transition:all .12s}
@@ -195,6 +197,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
       <div class="fh" style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px">
         <span style="background:#ede9fe;color:#5b21b6;padding:1px 6px;border-radius:3px;font-size:11px">!!wichtig!!</span>
         <span style="background:#fce7f3;color:#9d174d;padding:1px 6px;border-radius:3px;font-size:11px">==markiert==</span>
+        <span style="background:var(--bg);color:var(--muted);padding:1px 6px;border-radius:3px;font-size:11px;border:1px solid var(--border)">[[bild1]]</span>
         <span style="font-size:11px;color:var(--faint)"><strong style="color:var(--text)">**fett**</strong> &nbsp; <em>*kursiv*</em> &nbsp; <u>__unterstr.__</u> &nbsp; <s>~~durch~~</s></span>
       </div>
     </div>
@@ -203,7 +206,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
       <label class="fl">Bilder (URL + optionale Bildunterschrift)</label>
       <div class="img-entries" id="imgEntries"></div>
       <button type="button" class="add-img-row" onclick="addImgRow()"><i class="ti ti-plus" aria-hidden="true"></i> Bild hinzufügen</button>
-      <div class="fh" style="margin-top:6px">Bilder aus GitHub-Repo oder imgur.com – direkt neben dem Inhalt sichtbar</div>
+      <div class="fh" style="margin-top:6px">Bilder aus GitHub-Repo oder imgur.com. Standardmäßig erscheinen sie am Ende der Karte – willst du ein Bild an einer bestimmten Stelle im Text, schreibe dort <code style="background:var(--bg);padding:0 3px;border-radius:2px">[[bild1]]</code>, <code style="background:var(--bg);padding:0 3px;border-radius:2px">[[bild2]]</code> usw. hinein (Nummer = Reihenfolge unten).</div>
     </div>
     <div class="fg" id="fCG"><label class="fl">Kapitel</label><select class="fs" id="fC"></select></div>
     <div class="modal-actions">
@@ -376,21 +379,38 @@ function fmt(s){
     .replace(/~~(.+?)~~/g,'<s>$1</s>');
 }
 
-function cardHTML(card,key){
-  const tc=TAG[key]||'t01', tl=TL(key)||'';
-  const imgs=Array.isArray(card.imgs)?card.imgs:[];
-  const imgBlocks=imgs.filter(i=>i&&i.url).map(i=>`
-    <div class="card-img-block">
+// Bild-Block-HTML für ein einzelnes Bild. inline=true → eingebettet im Fließtext (kein Rahmen/Extra-Padding).
+function imgBlockHTML(i,inline){
+  return `<div class="card-img-block${inline?' inline':''}">
       <img src="${esc(i.url)}" alt="${esc(i.caption||'')}" loading="lazy" onerror="this.parentElement.style.display='none'">
       ${i.caption?`<div class="card-img-caption">${esc(i.caption)}</div>`:''}
-    </div>`).join('');
+    </div>`;
+}
+
+// Baut Beschreibungs-HTML + Rest-Bilder auf. Bilder können per [[bild1]], [[bild2]] … im Text
+// an gewünschter Stelle eingefügt werden. Nicht referenzierte Bilder landen wie bisher am Ende.
+function renderCardBody(card){
+  const imgs=(Array.isArray(card.imgs)?card.imgs:[]).filter(i=>i&&i.url);
+  const used=new Set();
+  const descHTML=fmt(card.desc).replace(/\[\[bild(\d+)\]\]/gi,(m,n)=>{
+    const idx=parseInt(n,10)-1;
+    if(imgs[idx]){used.add(idx);return imgBlockHTML(imgs[idx],true);}
+    return '';
+  });
+  const trailing=imgs.map((im,idx)=>used.has(idx)?'':imgBlockHTML(im,false)).join('');
+  return {descHTML,trailing};
+}
+
+function cardHTML(card,key){
+  const tc=TAG[key]||'t01', tl=TL(key)||'';
+  const {descHTML,trailing}=renderCardBody(card);
   return `<div class="card" id="cd-${card.id}">
     <div class="card-main">
       <span class="card-tag ${tc}">${esc(tl)}</span>
       <div class="card-title"><i class="ti ${card.icon||'ti-file'}" aria-hidden="true" style="font-size:14px;opacity:.55"></i>${esc(card.title)}</div>
-      <div class="card-desc">${fmt(card.desc)}</div>
+      <div class="card-desc">${descHTML}</div>
     </div>
-    ${imgBlocks}
+    ${trailing}
     <div class="card-foot">
       <button class="foot-btn" onclick="openEdit('${key}','${card.id}')"><i class="ti ti-pencil" aria-hidden="true"></i> Bearbeiten</button>
       <button class="foot-btn del" onclick="delCard('${key}','${card.id}')"><i class="ti ti-trash" aria-hidden="true"></i> Löschen</button>
@@ -494,12 +514,24 @@ function resetModal(){
 function addImgRow(url='',caption=''){
   const row=document.createElement('div');
   row.className='img-row';
-  row.innerHTML=`<div style="flex:1;display:flex;flex-direction:column;gap:4px">
+  row.innerHTML=`<span class="img-num"></span>
+  <div style="flex:1;display:flex;flex-direction:column;gap:4px">
     <input class="fi" type="text" placeholder="https://… (Bild-URL)" value="${esc(url)}">
     <input class="fi" type="text" placeholder="Bildunterschrift (optional)" value="${esc(caption)}">
   </div>
-  <button type="button" class="img-del" onclick="this.parentElement.remove()"><i class="ti ti-x" aria-hidden="true"></i></button>`;
+  <button type="button" class="img-del" onclick="removeImgRow(this)"><i class="ti ti-x" aria-hidden="true"></i></button>`;
   document.getElementById('imgEntries').appendChild(row);
+  renumberImgRows();
+}
+function removeImgRow(btn){
+  btn.parentElement.remove();
+  renumberImgRows();
+}
+function renumberImgRows(){
+  document.querySelectorAll('#imgEntries .img-row').forEach((row,i)=>{
+    const n=row.querySelector('.img-num');
+    if(n)n.textContent='Bild '+(i+1);
+  });
 }
 function getImgRows(){
   return [...document.getElementById('imgEntries').querySelectorAll('.img-row')].map(row=>{
@@ -588,9 +620,9 @@ function doSearch(q){
   document.getElementById('searchCards').innerHTML=res.length
     ?res.map(({cd,key})=>{
       const tc=TAG[key]||'t01',tl=TL(key)||'';
-      const imgs=Array.isArray(cd.imgs)?cd.imgs:[];
-      const imgB=imgs.filter(i=>i&&i.url).map(i=>`<div class="card-img-block"><img src="${esc(i.url)}" alt="${esc(i.caption||'')}" loading="lazy" onerror="this.parentElement.style.display='none'">${i.caption?`<div class="card-img-caption">${esc(i.caption)}</div>`:''}</div>`).join('');
-      return `<div class="card"><div class="card-main"><span class="card-tag ${tc}">${esc(tl)}</span><div class="card-title"><i class="ti ${cd.icon||'ti-file'}" aria-hidden="true" style="font-size:14px;opacity:.55"></i>${hi(cd.title)}</div><div class="card-desc">${fmt(cd.desc)}</div></div>${imgB}</div>`;
+      const {descHTML,trailing}=renderCardBody(cd);
+      const titleHTML=hi(cd.title);
+      return `<div class="card"><div class="card-main"><span class="card-tag ${tc}">${esc(tl)}</span><div class="card-title"><i class="ti ${cd.icon||'ti-file'}" aria-hidden="true" style="font-size:14px;opacity:.55"></i>${titleHTML}</div><div class="card-desc">${descHTML}</div></div>${trailing}</div>`;
     }).join('')
     :'<div class="empty"><i class="ti ti-search-off"></i>Nichts gefunden.</div>';
 }
