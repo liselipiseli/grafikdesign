@@ -392,10 +392,12 @@ function imgBlockHTML(i,inline){
 function renderCardBody(card){
   const imgs=(Array.isArray(card.imgs)?card.imgs:[]).filter(i=>i&&i.url);
   const used=new Set();
-  const descHTML=fmt(card.desc).replace(/\[\[bild(\d+)\]\]/gi,(m,n)=>{
+  // umliegende Leerzeilen um den Platzhalter mit entfernen, sonst addiert sich der
+  // Zeilenabstand (pre-line) mit dem Abstand des Bildblocks zu einer riesigen Lücke
+  const descHTML=fmt(card.desc).replace(/\n*\[\[bild(\d+)\]\]\n*/gi,(m,n)=>{
     const idx=parseInt(n,10)-1;
     if(imgs[idx]){used.add(idx);return imgBlockHTML(imgs[idx],true);}
-    return '';
+    return '\n';
   });
   const trailing=imgs.map((im,idx)=>used.has(idx)?'':imgBlockHTML(im,false)).join('');
   return {descHTML,trailing};
